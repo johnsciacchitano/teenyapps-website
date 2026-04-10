@@ -290,9 +290,9 @@
 
         .app-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 28px;
-            max-width: 840px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            max-width: var(--max-width);
             margin: 0 auto;
         }
 
@@ -556,6 +556,10 @@
                 max-width: 420px;
             }
 
+            .app-grid {
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            }
+
             .app-card { padding: 28px; }
 
             .card-actions {
@@ -640,7 +644,7 @@
                 </div>
 
                 <!-- TeenyScreeny -->
-                <div class="app-card reveal reveal-delay-1">
+                <div class="app-card reveal">
                     <img src="Images/teenyscreeny-appicon.png" alt="TeenyScreeny" class="app-icon">
                     <h3>TeenyScreeny</h3>
                     <div class="app-price">$4.99 <span>one-time</span></div>
@@ -651,6 +655,102 @@
                         <a href="https://buy.polar.sh/polar_cl_h8MDjyFs6btS1eSaJ9bbDszDNC9KghQ57WvTa4LdP4j" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
                     <a href="https://teenyscreeny.com" class="learn-more" target="_blank" rel="noopener">Learn more &#8594;</a>
+                </div>
+
+                <!-- TeenyMute -->
+                <div class="app-card reveal">
+                    <!-- TODO: add teenymute-appicon.png to Images/ -->
+                    <img src="Images/teenymute-appicon.png" alt="TeenyMute" class="app-icon">
+                    <h3>TeenyMute</h3>
+                    <div class="app-price">$4.99 <span>one-time</span></div>
+                    <p class="app-desc">One-click mic mute/unmute in your menu bar with a global hotkey. Always know your mic state. Toggle and push-to-talk modes.</p>
+                    <div class="card-actions">
+                        <!-- TODO: add TeenyMute download URL -->
+                        <a href="#" class="btn btn-outline btn-sm">Download</a>
+                        <!-- TODO: add TeenyMute purchase URL -->
+                        <a href="#" class="btn btn-primary btn-sm">Purchase</a>
+                    </div>
+                    <a href="https://teenymute.com" class="learn-more" target="_blank" rel="noopener">Learn more &#8594;</a>
+                </div>
+
+                <!-- TeenyClip -->
+                <div class="app-card reveal">
+                    <!-- TODO: add teenyclip-appicon.png to Images/ -->
+                    <img src="Images/teenyclip-appicon.png" alt="TeenyClip" class="app-icon">
+                    <h3>TeenyClip</h3>
+                    <div class="app-price">$4.99 <span>one-time</span></div>
+                    <p class="app-desc">Clipboard history manager. Stores your last 100 copies with search, pinned favorites, and a paste queue for sequential pasting.</p>
+                    <div class="card-actions">
+                        <!-- TODO: add TeenyClip download URL -->
+                        <a href="#" class="btn btn-outline btn-sm">Download</a>
+                        <!-- TODO: add TeenyClip purchase URL -->
+                        <a href="#" class="btn btn-primary btn-sm">Purchase</a>
+                    </div>
+                    <a href="https://teenyclip.com" class="learn-more" target="_blank" rel="noopener">Learn more &#8594;</a>
+                </div>
+
+                <!-- TeenySound -->
+                <div class="app-card reveal">
+                    <!-- TODO: add teenysound-appicon.png to Images/ -->
+                    <img src="Images/teenysound-appicon.png" alt="TeenySound" class="app-icon">
+                    <h3>TeenySound</h3>
+                    <div class="app-price">$9.99 <span>one-time</span></div>
+                    <p class="app-desc">Per-app volume control. Individual volume sliders for every app producing audio, plus a global mute-all hotkey.</p>
+                    <div class="card-actions">
+                        <!-- TODO: add TeenySound download URL -->
+                        <a href="#" class="btn btn-outline btn-sm">Download</a>
+                        <!-- TODO: add TeenySound purchase URL -->
+                        <a href="#" class="btn btn-primary btn-sm">Purchase</a>
+                    </div>
+                    <a href="https://teenysound.com" class="learn-more" target="_blank" rel="noopener">Learn more &#8594;</a>
+                </div>
+
+                <!-- TeenyStat -->
+                <div class="app-card reveal">
+                    <!-- TODO: add teenystat-appicon.png to Images/ -->
+                    <img src="Images/teenystat-appicon.png" alt="TeenyStat" class="app-icon">
+                    <h3>TeenyStat</h3>
+                    <div class="app-price">$4.99 <span>one-time</span></div>
+                    <p class="app-desc">System vitals at a glance. CPU temperature, fan speed, memory pressure, and CPU usage with color-coded thresholds and sparkline history.</p>
+                    <div class="card-actions">
+                        <!-- TODO: add TeenyStat download URL -->
+                        <a href="#" class="btn btn-outline btn-sm">Download</a>
+                        <!-- TODO: add TeenyStat purchase URL -->
+                        <a href="#" class="btn btn-primary btn-sm">Purchase</a>
+                    </div>
+                    <a href="https://teenystat.com" class="learn-more" target="_blank" rel="noopener">Learn more &#8594;</a>
+                </div>
+
+                <!-- TeenyShelf -->
+                <div class="app-card reveal">
+                    <!-- TODO: add teenyshelf-appicon.png to Images/ -->
+                    <img src="Images/teenyshelf-appicon.png" alt="TeenyShelf" class="app-icon">
+                    <h3>TeenyShelf</h3>
+                    <div class="app-price">$4.99 <span>one-time</span></div>
+                    <p class="app-desc">Drag-and-drop file staging area. Park files on a menu bar shelf while you navigate between folders, then drag them to their destination.</p>
+                    <div class="card-actions">
+                        <!-- TODO: add TeenyShelf download URL -->
+                        <a href="#" class="btn btn-outline btn-sm">Download</a>
+                        <!-- TODO: add TeenyShelf purchase URL -->
+                        <a href="#" class="btn btn-primary btn-sm">Purchase</a>
+                    </div>
+                    <a href="https://teenyshelf.com" class="learn-more" target="_blank" rel="noopener">Learn more &#8594;</a>
+                </div>
+
+                <!-- TeenyColor -->
+                <div class="app-card reveal">
+                    <!-- TODO: add teenycolor-appicon.png to Images/ -->
+                    <img src="Images/teenycolor-appicon.png" alt="TeenyColor" class="app-icon">
+                    <h3>TeenyColor</h3>
+                    <div class="app-price">$4.99 <span>one-time</span></div>
+                    <p class="app-desc">Screen color picker with history. Grab any pixel's color, auto-copy as hex/RGB/HSL, keep a searchable history of picks with WCAG contrast ratios.</p>
+                    <div class="card-actions">
+                        <!-- TODO: add TeenyColor download URL -->
+                        <a href="#" class="btn btn-outline btn-sm">Download</a>
+                        <!-- TODO: add TeenyColor purchase URL -->
+                        <a href="#" class="btn btn-primary btn-sm">Purchase</a>
+                    </div>
+                    <a href="https://teenycolor.com" class="learn-more" target="_blank" rel="noopener">Learn more &#8594;</a>
                 </div>
 
             </div>
@@ -668,9 +768,9 @@
                 <span class="bundle-term">one-time purchase, forever</span>
             </div>
             <div class="bundle-value reveal reveal-delay-2">
-                <span>Today's apps individually: $19.98</span>
+                <span>8 apps individually: $54.92</span>
                 <span class="sep">&middot;</span>
-                <span>Every future app included free</span>
+                <span>Save $4.93 + all future apps free</span>
             </div>
             <a href="https://polar.sh/checkout/polar_c_Fb32Anj5Xsv1T0M0YNka9WeM1xrvyMrCfQIWN2fZeYD" target="_blank" rel="noopener" class="btn btn-primary btn-large reveal reveal-delay-3">Purchase the Bundle</a>
         </div>
@@ -683,6 +783,18 @@
             <a href="https://teenytool.com" target="_blank" rel="noopener">TeenyTool</a>
             <span class="footer-sep">&middot;</span>
             <a href="https://teenyscreeny.com" target="_blank" rel="noopener">TeenyScreeny</a>
+            <span class="footer-sep">&middot;</span>
+            <a href="https://teenymute.com" target="_blank" rel="noopener">TeenyMute</a>
+            <span class="footer-sep">&middot;</span>
+            <a href="https://teenyclip.com" target="_blank" rel="noopener">TeenyClip</a>
+            <span class="footer-sep">&middot;</span>
+            <a href="https://teenysound.com" target="_blank" rel="noopener">TeenySound</a>
+            <span class="footer-sep">&middot;</span>
+            <a href="https://teenystat.com" target="_blank" rel="noopener">TeenyStat</a>
+            <span class="footer-sep">&middot;</span>
+            <a href="https://teenyshelf.com" target="_blank" rel="noopener">TeenyShelf</a>
+            <span class="footer-sep">&middot;</span>
+            <a href="https://teenycolor.com" target="_blank" rel="noopener">TeenyColor</a>
             <span class="footer-sep">&middot;</span>
             <a href="mailto:contact@teenyapps.com">Contact</a>
         </div>
