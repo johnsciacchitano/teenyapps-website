@@ -590,6 +590,14 @@
             .bundle-price { font-size: 48px; }
         }
     </style>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9VB76QH7EG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-9VB76QH7EG');
+    </script>
 </head>
 <body>
 
@@ -820,6 +828,27 @@
                 });
                 ticking = true;
             }
+        });
+
+        // GA4 custom event tracking — per-app card clicks
+        document.querySelectorAll('.app-card a[download]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const appName = btn.closest('.app-card').querySelector('h3').textContent;
+                gtag('event', 'download_click', { app_name: appName });
+            });
+        });
+        document.querySelectorAll('.app-card a[href*="polar.sh"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const appName = btn.closest('.app-card').querySelector('h3').textContent;
+                gtag('event', 'purchase_click', { app_name: appName });
+            });
+        });
+
+        // GA4 — bundle purchase click
+        document.querySelectorAll('.bundle a[href*="polar.sh"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                gtag('event', 'purchase_click', { app_name: 'Bundle' });
+            });
         });
     </script>
 </body>
