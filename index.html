@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TeenyApps - Tiny Mac Menu Bar Utilities</title>
+    <title>TeenyApps — Tiny Mac Menu Bar Utilities</title>
     <meta name="description" content="Lightweight Mac menu bar utilities. No subscriptions, no bloat, no accounts. TeenyTool, TeenyScreeny, and more.">
     <meta property="og:title" content="TeenyApps - Tiny Mac Menu Bar Utilities">
     <meta property="og:description" content="Small, focused Mac utilities that live in your menu bar. One-time purchase. No subscriptions.">
@@ -12,7 +12,7 @@
     <link rel="icon" type="image/png" href="Images/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         @font-face {
             font-family: 'Fraunces';
@@ -24,23 +24,24 @@
 
         :root {
             --bg: #0b0b10;
-            --bg-elevated: #141419;
-            --bg-surface: #1a1a22;
+            --bg-elevated: #131319;
+            --bg-panel: #16161d;
+            --bg-panel-row-hover: rgba(255, 255, 255, 0.05);
             --border: rgba(255, 255, 255, 0.07);
-            --border-hover: rgba(255, 255, 255, 0.14);
+            --border-strong: rgba(255, 255, 255, 0.12);
             --text: #ede9e3;
             --text-secondary: #a09a92;
             --text-muted: #6b6660;
+            --text-dim: #45413c;
             --orange: #FF6B35;
             --orange-hover: #ff7d4d;
-            --orange-light: rgba(255, 107, 53, 0.1);
-            --orange-glow: rgba(255, 107, 53, 0.15);
-            --max-width: 1100px;
+            --orange-soft: rgba(255, 107, 53, 0.1);
+            --green: #4ADE80;
+            --amber: #FBBF24;
+            --max: 1100px;
             --font-display: 'Fraunces', Georgia, serif;
             --font-body: 'DM Sans', system-ui, -apple-system, sans-serif;
-            --radius: 14px;
-            --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3);
-            --shadow-glow: 0 0 40px rgba(255, 107, 53, 0.08);
+            --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
         }
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -56,45 +57,39 @@
             overflow-x: hidden;
         }
 
-        /* Subtle dot grid texture */
+        /* Single subtle top gradient, nothing more */
         body::before {
             content: '';
             position: fixed;
-            inset: 0;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-            background-size: 28px 28px;
+            top: 0; left: 0; right: 0;
+            height: 600px;
+            background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255, 107, 53, 0.08), transparent 70%);
             pointer-events: none;
             z-index: 0;
         }
 
         body > * { position: relative; z-index: 1; }
 
-        .brand-name {
-            font-family: var(--font-display);
-            font-weight: 700;
-        }
-
         /* ===== NAV ===== */
         nav {
             position: fixed;
             top: 0; left: 0; right: 0;
             z-index: 100;
-            background: rgba(11, 11, 16, 0.8);
+            background: rgba(11, 11, 16, 0.72);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             border-bottom: 1px solid var(--border);
-            transition: box-shadow 0.3s ease;
         }
 
         nav.scrolled {
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 2px 18px rgba(0, 0, 0, 0.4);
         }
 
         .nav-inner {
-            max-width: var(--max-width);
+            max-width: var(--max);
             margin: 0 auto;
             padding: 0 40px;
-            height: 64px;
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -109,15 +104,14 @@
         }
 
         .nav-brand img {
-            width: 30px;
-            height: 30px;
-            border-radius: 7px;
+            width: 28px; height: 28px;
+            border-radius: 6px;
         }
 
         .nav-brand span {
             font-family: var(--font-display);
             font-weight: 700;
-            font-size: 19px;
+            font-size: 18px;
             letter-spacing: -0.3px;
         }
 
@@ -132,15 +126,15 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 10px 22px;
+            gap: 6px;
+            padding: 10px 20px;
             border-radius: 8px;
             text-decoration: none;
             font-family: var(--font-body);
             font-weight: 600;
-            font-size: 15px;
+            font-size: 14.5px;
             line-height: 1.4;
-            transition: all 0.2s ease;
+            transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
             cursor: pointer;
             border: none;
             white-space: nowrap;
@@ -149,225 +143,944 @@
         .btn-primary {
             background: var(--orange);
             color: #fff;
-            box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
         }
         .btn-primary:hover {
             background: var(--orange-hover);
-            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.4);
-            transform: translateY(-1px);
         }
 
         .btn-outline {
             background: transparent;
             color: var(--text);
-            border: 1.5px solid var(--border-hover);
+            border: 1px solid var(--border-strong);
         }
         .btn-outline:hover {
-            border-color: var(--orange);
-            color: var(--orange);
-            background: var(--orange-light);
-        }
-
-        .btn-ghost {
-            background: transparent;
-            color: var(--orange);
-            padding: 8px 0;
-            font-size: 14px;
-        }
-        .btn-ghost:hover {
-            text-decoration: underline;
+            border-color: var(--text-secondary);
+            color: var(--text);
         }
 
         .btn-large {
-            padding: 14px 32px;
-            font-size: 16px;
-            border-radius: 10px;
-        }
-
-        .download-all-note {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-top: 8px;
+            padding: 13px 28px;
+            font-size: 15px;
         }
 
         .btn-sm {
-            padding: 8px 18px;
-            font-size: 14px;
+            padding: 8px 16px;
+            font-size: 13.5px;
         }
 
         /* ===== HERO ===== */
         .hero {
-            padding: 160px 40px 120px;
+            padding: 120px 40px 80px;
             text-align: center;
+            position: relative;
+        }
+
+        .hero-inner {
+            max-width: 780px;
+            margin: 0 auto;
+        }
+
+        /* ----- MENU BAR DEMO (signature moment) ----- */
+        .mb-demo {
+            max-width: 640px;
+            margin: 0 auto 64px;
+            position: relative;
+        }
+
+        .mb-demo-cap {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            opacity: 0;
+            animation: fade-in 0.6s ease 0.1s forwards;
+        }
+
+        @keyframes fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .mb {
+            display: flex;
+            align-items: center;
+            height: 26px;
+            padding: 0 10px;
+            background: linear-gradient(180deg, rgba(34, 34, 42, 0.92), rgba(22, 22, 28, 0.95));
+            border: 1px solid var(--border-strong);
+            border-radius: 7px;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            gap: 1px;
+            font-size: 11.5px;
+            color: rgba(237, 233, 227, 0.88);
+            position: relative;
+            opacity: 0;
+            animation: slide-down 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+        }
+
+        @keyframes slide-down {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .mb-apple {
+            display: grid; place-items: center;
+            width: 14px; height: 14px;
+            margin-right: 8px;
+            opacity: 0.9;
+        }
+
+        .mb-apple svg { width: 11px; height: 11px; }
+
+        .mb-menu {
+            padding: 2px 7px;
+            border-radius: 4px;
+            letter-spacing: -0.1px;
+        }
+
+        .mb-menu-primary { font-weight: 600; }
+
+        .mb-spacer { flex: 1; }
+
+        .mb-apps {
+            display: flex;
+            gap: 1px;
+            padding: 0 2px;
+            margin-right: 4px;
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            padding-right: 7px;
+        }
+
+        .mb-app {
+            width: 20px; height: 20px;
+            display: grid;
+            place-items: center;
+            border-radius: 4px;
+            border: none;
+            background: transparent;
+            color: rgba(237, 233, 227, 0.72);
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+            padding: 0;
+        }
+
+        .mb-app svg { width: 13px; height: 13px; }
+
+        .mb-app:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(237, 233, 227, 0.95);
+        }
+
+        .mb-app.active {
+            background: rgba(255, 107, 53, 0.18);
+            color: var(--orange);
+        }
+
+        .mb-status {
+            display: flex; align-items: center;
+            padding: 0 4px;
+            opacity: 0.7;
+        }
+
+        .mb-status svg { width: 12px; height: 12px; }
+
+        .mb-clock {
+            font-size: 11px;
+            padding: 0 4px 0 6px;
+            letter-spacing: 0.1px;
+        }
+
+        .mb-panel-wrap {
+            margin-top: 16px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            opacity: 0;
+            animation: slide-down 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
+        }
+
+        .mb-panel {
+            width: 280px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-strong);
+            border-radius: 10px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+            padding: 6px;
+            position: relative;
+        }
+
+        .mb-stage {
+            display: grid;
+        }
+
+        .mb-slide {
+            grid-area: 1 / 1;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(4px);
+            transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .mb-slide.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        /* ===== REUSABLE PANEL COMPONENT (tp = teeny panel) ===== */
+        .tp-head {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 9px 9px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tp-head-icon {
+            width: 16px; height: 16px;
+            display: grid; place-items: center;
+            color: var(--text);
+            opacity: 0.9;
+            flex-shrink: 0;
+        }
+
+        .tp-head-icon svg { width: 100%; height: 100%; }
+
+        .tp-head-title {
+            flex: 1;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: -0.1px;
+        }
+
+        .tp-head-meta {
+            font-family: var(--font-mono);
+            font-size: 10.5px;
+            color: var(--text-muted);
+            letter-spacing: 0.2px;
+        }
+
+        .tp-label {
+            padding: 9px 9px 5px;
+            font-size: 9.5px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .tp-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 9px;
+            border-radius: 5px;
+            font-size: 12px;
+            color: var(--text);
+            cursor: default;
+        }
+
+        .tp-row.hover {
+            background: var(--bg-panel-row-hover);
+        }
+
+        .tp-row-icon {
+            width: 16px; height: 16px;
+            display: grid; place-items: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            flex-shrink: 0;
+        }
+
+        .tp-row-icon.sq {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 3px;
+        }
+
+        .tp-row-icon svg { width: 13px; height: 13px; }
+
+        .tp-row-label {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .tp-row-meta {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-muted);
+            letter-spacing: 0.3px;
+            flex-shrink: 0;
+        }
+
+        .tp-row-star {
+            color: var(--text-dim);
+            font-size: 11px;
+        }
+
+        .tp-sep {
+            height: 1px;
+            background: var(--border);
+            margin: 5px 4px;
+        }
+
+        .tp-kbd {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-muted);
+            letter-spacing: 0.4px;
+        }
+
+        /* ===== DEMO-SPECIFIC STYLES ===== */
+
+        /* TeenyTool - rows with cycling hover */
+        .demo-tool .tp-row[data-tool-row] {
+            transition: background 0.3s ease;
+        }
+
+        /* TeenyDisplay - sliders */
+        .demo-display .tp-row {
+            padding: 8px 9px;
+        }
+
+        .disp-track {
+            flex: 1;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 100px;
             position: relative;
             overflow: hidden;
         }
 
-        .hero::before {
-            content: '';
+        .disp-fill {
             position: absolute;
-            top: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 900px;
-            height: 600px;
-            background: radial-gradient(ellipse, rgba(255, 107, 53, 0.07) 0%, transparent 65%);
-            pointer-events: none;
+            top: 0; left: 0; bottom: 0;
+            background: var(--text);
+            border-radius: 100px;
+            opacity: 0.85;
         }
 
-        .hero-inner {
-            max-width: 680px;
-            margin: 0 auto;
-            position: relative;
+        .demo-display .disp-row-1 .disp-fill { width: 75%; animation: slider-breathe 5s ease-in-out infinite; }
+        .demo-display .disp-row-2 .disp-fill { width: 60%; animation: slider-breathe 5s ease-in-out infinite 1.2s; }
+        .demo-display .disp-row-3 .disp-fill { width: 42%; animation: slider-breathe 5s ease-in-out infinite 2.4s; }
+
+        @keyframes slider-breathe {
+            0%, 100% { width: 30%; }
+            50% { width: 80%; }
         }
 
-        .hero-logo {
-            width: 72px;
-            height: 72px;
-            border-radius: 18px;
-            margin-bottom: 28px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        /* TeenyScreeny - matches real app screenshot */
+        .demo-screeny {
+            padding: 10px 10px 6px;
         }
 
-        .hero h1 {
-            font-family: var(--font-display);
-            font-size: clamp(48px, 7vw, 72px);
+        .screeny-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .screeny-time {
+            font-size: 28px;
             font-weight: 700;
-            line-height: 1.05;
-            letter-spacing: -1.5px;
-            margin-bottom: 16px;
+            color: var(--green);
+            letter-spacing: -0.8px;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+            margin-bottom: 12px;
+        }
+
+        .screeny-time .sec { display: inline-block; min-width: 0.8ch; }
+
+        .screeny-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11.5px;
+            padding: 4px 0;
             color: var(--text);
         }
 
-        .tagline {
-            font-size: clamp(20px, 3vw, 26px);
-            font-weight: 500;
-            color: var(--orange);
-            margin-bottom: 20px;
-            letter-spacing: -0.3px;
+        .screeny-row .val {
+            color: var(--text);
+            font-variant-numeric: tabular-nums;
         }
 
-        .subtitle {
-            font-size: 17px;
+        .screeny-chart {
+            height: 14px;
+            margin: 6px 0 4px;
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+        }
+
+        .screeny-chart .bar {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 1px;
+        }
+
+        .screeny-chart .bar.hi {
+            background: var(--green);
+        }
+
+        .screeny-action {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 6px;
+            border-radius: 4px;
+            font-size: 11.5px;
+            color: var(--text);
+            cursor: default;
+        }
+
+        .screeny-action:hover { background: var(--bg-panel-row-hover); }
+
+        .screeny-action svg { width: 13px; height: 13px; opacity: 0.7; flex-shrink: 0; }
+
+        .screeny-action-row {
+            display: flex;
+            gap: 4px;
+        }
+
+        .screeny-action-row .screeny-action { flex: 1; }
+
+        .screeny-trial {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10.5px;
+            color: var(--amber);
+            padding: 6px 8px;
+            margin-top: 4px;
+        }
+
+        .screeny-trial svg { width: 11px; height: 11px; }
+
+        .screeny-trial-row {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .screeny-trial-row .quit {
+            color: var(--text-muted);
+            font-size: 11.5px;
+            padding: 4px 8px;
+            cursor: default;
+        }
+
+        /* TeenyMute */
+        .mute-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 4px 9px 6px;
+        }
+
+        .mute-mic {
+            width: 28px; height: 28px;
+            border-radius: 6px;
+            background: rgba(255, 107, 53, 0.15);
+            display: grid; place-items: center;
+            color: var(--orange);
+            flex-shrink: 0;
+        }
+
+        .mute-mic svg { width: 14px; height: 14px; }
+
+        .mute-info { flex: 1; }
+
+        .mute-state {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .mute-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 6px var(--green);
+            animation: mute-pulse 1.8s ease-in-out infinite;
+        }
+
+        @keyframes mute-pulse {
+            0%, 100% { opacity: 0.5; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        .mute-device {
+            font-size: 10.5px;
+            color: var(--text-muted);
+            margin-top: 1px;
+        }
+
+        .mute-mode {
+            padding: 2px 9px 4px;
+        }
+
+        .mute-opt {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 5px 0;
+            font-size: 11.5px;
+        }
+
+        .mute-opt .radio {
+            width: 11px; height: 11px;
+            border: 1.2px solid var(--text-secondary);
+            border-radius: 50%;
+            display: grid; place-items: center;
+            flex-shrink: 0;
+        }
+
+        .mute-opt.selected .radio {
+            border-color: var(--orange);
+        }
+
+        .mute-opt.selected .radio::after {
+            content: '';
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: var(--orange);
+        }
+
+        .mute-opt .lbl { flex: 1; }
+
+        /* TeenyClip */
+        .clip-item {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 5px 9px;
+            font-size: 11.5px;
+            border-radius: 4px;
+            color: var(--text);
+        }
+
+        .clip-item .type {
+            font-family: var(--font-mono);
+            font-size: 8.5px;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            padding: 2px 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+            flex-shrink: 0;
+            min-width: 32px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .clip-item .txt {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .clip-item .star {
+            color: var(--orange);
+            font-size: 10px;
+        }
+
+        .clip-item.new {
+            animation: clip-new 3s ease;
+        }
+
+        @keyframes clip-new {
+            0% { background: rgba(255, 107, 53, 0.2); }
+            100% { background: transparent; }
+        }
+
+        /* TeenySound */
+        .sound-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 9px;
+            font-size: 11.5px;
+        }
+
+        .sound-app-icon {
+            width: 18px; height: 18px;
+            border-radius: 4px;
+            display: grid; place-items: center;
+            font-size: 10px;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .sound-app-icon.spot { background: #1DB954; }
+        .sound-app-icon.chr { background: #4285F4; }
+        .sound-app-icon.zm { background: #2D8CFF; }
+
+        .sound-app-name {
+            min-width: 52px;
+            font-size: 11.5px;
+        }
+
+        .sound-row .disp-track { height: 3px; }
+
+        .sound-row .disp-fill {
+            background: var(--text);
+        }
+
+        .demo-sound .sound-row:nth-child(1) .disp-fill { animation: sound-a 4s ease-in-out infinite; }
+        .demo-sound .sound-row:nth-child(2) .disp-fill { animation: sound-b 4s ease-in-out infinite; }
+        .demo-sound .sound-row:nth-child(3) .disp-fill { animation: sound-c 4s ease-in-out infinite; }
+
+        @keyframes sound-a {
+            0%, 100% { width: 75%; }
+            50% { width: 85%; }
+        }
+        @keyframes sound-b {
+            0%, 100% { width: 40%; }
+            50% { width: 52%; }
+        }
+        @keyframes sound-c {
+            0%, 100% { width: 30%; }
+            50% { width: 38%; }
+        }
+
+        .sound-val {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-muted);
+            min-width: 28px;
+            text-align: right;
+        }
+
+        /* TeenyStat */
+        .stat-block {
+            padding: 6px 9px;
+        }
+
+        .stat-head-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10.5px;
+            margin-bottom: 4px;
+        }
+
+        .stat-lbl {
+            color: var(--text-muted);
+            letter-spacing: 0.6px;
+        }
+
+        .stat-val {
+            font-family: var(--font-mono);
+            color: var(--text);
+            font-weight: 500;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .stat-spark {
+            width: 100%;
+            height: 20px;
+            display: block;
+        }
+
+        .stat-spark-line {
+            fill: none;
+            stroke: var(--orange);
+            stroke-width: 1.3;
+            stroke-linejoin: round;
+            stroke-linecap: round;
+        }
+
+        .stat-spark-area {
+            fill: rgba(255, 107, 53, 0.1);
+        }
+
+        /* TeenyShelf */
+        .shelf-drop {
+            margin: 4px 7px;
+            padding: 12px 8px;
+            border: 1.5px dashed var(--border-strong);
+            border-radius: 7px;
+            display: flex;
+            gap: 7px;
+            justify-content: center;
+            min-height: 62px;
+            align-items: center;
+        }
+
+        .shelf-file {
+            width: 30px; height: 38px;
+            background: linear-gradient(180deg, #2e2e38, #1e1e26);
+            border: 1px solid var(--border-strong);
+            border-radius: 3px;
+            position: relative;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+            animation: shelf-hover 3.5s ease-in-out infinite;
+        }
+
+        .shelf-file::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 8px; height: 8px;
+            background: var(--bg-panel);
+            border-left: 1px solid var(--border-strong);
+            border-bottom: 1px solid var(--border-strong);
+            border-radius: 0 2px 0 2px;
+        }
+
+        .shelf-file:nth-child(1) { animation-delay: 0s; }
+        .shelf-file:nth-child(2) { animation-delay: 0.6s; }
+        .shelf-file:nth-child(3) {
+            animation-delay: 1.2s;
+            background: linear-gradient(180deg, #3d2818, #2a1c10);
+            border-color: rgba(255, 107, 53, 0.3);
+        }
+
+        @keyframes shelf-hover {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        /* TeenyColor - matches real app screenshot */
+        .color-pick-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin: 4px 6px 6px;
+            padding: 10px;
+            background: linear-gradient(180deg, #ff8a55, #ff6b35);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: default;
+        }
+
+        .color-pick-btn svg { width: 14px; height: 14px; }
+
+        .color-recent {
+            padding: 2px 3px;
+        }
+
+        .color-swatch-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 9px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 11.5px;
+            color: var(--text);
+        }
+
+        .color-swatch {
+            width: 20px; height: 20px;
+            border-radius: 3px;
+            flex-shrink: 0;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+        }
+
+        .color-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px 8px;
+        }
+
+        .color-footer .left, .color-footer .right {
+            display: flex; gap: 8px;
+        }
+
+        .color-footer .ic {
+            width: 22px; height: 22px;
+            display: grid; place-items: center;
+            color: var(--text-muted);
+            cursor: default;
+            border-radius: 4px;
+        }
+
+        .color-footer .ic:hover {
+            background: var(--bg-panel-row-hover);
+            color: var(--text);
+        }
+
+        .color-footer .ic svg { width: 13px; height: 13px; }
+
+        /* ===== HERO TEXT ===== */
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(56px, 8vw, 88px);
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+            color: var(--text);
+            opacity: 0;
+            animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+        }
+
+        .hero .tagline {
+            font-size: clamp(19px, 2.4vw, 24px);
+            color: var(--orange);
+            margin-bottom: 18px;
+            font-weight: 500;
+            letter-spacing: -0.3px;
+            opacity: 0;
+            animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+        }
+
+        .hero .subtitle {
+            font-size: 16.5px;
             color: var(--text-secondary);
             max-width: 520px;
-            margin: 0 auto 40px;
-            line-height: 1.7;
+            margin: 0 auto 36px;
+            line-height: 1.65;
+            opacity: 0;
+            animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards;
         }
 
         .hero-actions {
             display: flex;
-            gap: 14px;
+            gap: 12px;
             justify-content: center;
             flex-wrap: wrap;
+            opacity: 0;
+            animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards;
+        }
+
+        @keyframes fade-up {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* ===== SECTION HEADERS ===== */
-        .section-header {
+        .section-head {
             text-align: center;
-            max-width: 540px;
+            max-width: 560px;
             margin: 0 auto 56px;
         }
 
-        .section-header h2 {
+        .section-head h2 {
             font-family: var(--font-display);
-            font-size: clamp(30px, 4vw, 40px);
+            font-size: clamp(32px, 4.5vw, 44px);
             font-weight: 700;
-            line-height: 1.15;
-            margin-bottom: 14px;
-            letter-spacing: -0.5px;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
         }
 
-        .section-header p {
+        .section-head p {
             color: var(--text-secondary);
-            font-size: 17px;
-            line-height: 1.7;
+            font-size: 16.5px;
+            line-height: 1.6;
         }
 
-        /* ===== APPS GRID ===== */
+        /* ===== APPS ===== */
         .apps {
-            padding: 80px 40px 100px;
+            padding: 100px 40px 120px;
         }
 
-        .apps-inner {
-            max-width: var(--max-width);
-            margin: 0 auto;
-        }
+        .apps-inner { max-width: var(--max); margin: 0 auto; }
 
         .app-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 24px;
-            max-width: var(--max-width);
-            margin: 0 auto;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 22px;
         }
 
         .app-card {
             background: var(--bg-elevated);
             border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 36px;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+            border-radius: 14px;
+            padding: 24px 24px 22px;
             display: flex;
             flex-direction: column;
+            transition: border-color 0.25s ease, background 0.25s ease;
         }
 
         .app-card:hover {
-            border-color: rgba(255, 107, 53, 0.25);
-            box-shadow: var(--shadow-glow);
-            transform: translateY(-4px);
+            border-color: var(--border-strong);
+            background: #15151c;
         }
 
-        .app-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 13px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        .app-head {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
         }
+
+        .app-icon-img {
+            width: 44px; height: 44px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+            flex-shrink: 0;
+        }
+
+        .app-head-text { flex: 1; min-width: 0; }
 
         .app-card h3 {
             font-family: var(--font-display);
             font-size: 22px;
             font-weight: 700;
-            margin-bottom: 4px;
             letter-spacing: -0.3px;
+            line-height: 1;
+            margin-bottom: 4px;
         }
 
         .app-price {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--orange);
-            font-weight: 600;
-            margin-bottom: 16px;
+            font-weight: 500;
         }
 
-        .app-price span {
+        .app-price em {
+            font-style: normal;
             color: var(--text-muted);
+            margin-left: 4px;
             font-weight: 400;
+        }
+
+        .app-preview {
+            margin-bottom: 18px;
         }
 
         .app-desc {
             color: var(--text-secondary);
-            font-size: 15px;
-            line-height: 1.65;
-            margin-bottom: 28px;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
             flex-grow: 1;
         }
 
         .card-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin-bottom: 12px;
         }
 
-        .card-actions .btn {
-            flex: 1;
-        }
+        .card-actions .btn { flex: 1; }
 
         .learn-more {
             color: var(--orange);
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             display: inline-flex;
             align-items: center;
@@ -376,127 +1089,122 @@
             align-self: flex-start;
         }
 
-        .learn-more:hover {
-            text-decoration: underline;
-            gap: 8px;
-        }
+        .learn-more:hover { gap: 8px; text-decoration: underline; }
 
         /* ===== BUNDLE ===== */
         .bundle {
-            padding: 100px 40px;
+            padding: 100px 40px 110px;
             position: relative;
-        }
-
-        .bundle::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                180deg,
-                rgba(255, 107, 53, 0.03) 0%,
-                rgba(255, 107, 53, 0.06) 50%,
-                rgba(255, 107, 53, 0.02) 100%
-            );
-            border-top: 1px solid rgba(255, 107, 53, 0.1);
-            border-bottom: 1px solid rgba(255, 107, 53, 0.1);
-            pointer-events: none;
+            border-top: 1px solid var(--border);
+            background: linear-gradient(180deg, rgba(255, 107, 53, 0.02), rgba(255, 107, 53, 0.05) 50%, transparent);
         }
 
         .bundle-inner {
-            max-width: 600px;
+            max-width: 560px;
             margin: 0 auto;
             text-align: center;
-            position: relative;
         }
 
         .bundle-badge {
             display: inline-block;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 1px;
+            font-size: 11.5px;
+            font-weight: 600;
+            letter-spacing: 1.2px;
             text-transform: uppercase;
             color: var(--orange);
-            background: var(--orange-light);
-            padding: 6px 16px;
-            border-radius: 20px;
-            margin-bottom: 24px;
+            background: var(--orange-soft);
+            padding: 6px 14px;
+            border-radius: 100px;
+            margin-bottom: 22px;
         }
 
         .bundle h2 {
             font-family: var(--font-display);
-            font-size: clamp(32px, 5vw, 44px);
+            font-size: clamp(34px, 5vw, 48px);
             font-weight: 700;
-            margin-bottom: 16px;
-            letter-spacing: -0.5px;
+            letter-spacing: -1px;
+            line-height: 1.05;
+            margin-bottom: 14px;
         }
 
         .bundle-pitch {
             color: var(--text-secondary);
-            font-size: 17px;
-            line-height: 1.7;
-            max-width: 480px;
-            margin: 0 auto 36px;
+            font-size: 16.5px;
+            line-height: 1.65;
+            max-width: 440px;
+            margin: 0 auto 32px;
         }
 
-        .bundle-price-wrap {
-            margin-bottom: 16px;
+        .bundle-icons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 36px;
+        }
+
+        .bundle-icons img {
+            width: 40px; height: 40px;
+            border-radius: 9px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .bundle-icons img:hover {
+            transform: translateY(-3px);
+        }
+
+        .bundle-price-block {
+            margin-bottom: 26px;
         }
 
         .bundle-price {
             font-family: var(--font-display);
-            font-size: clamp(52px, 8vw, 68px);
+            font-size: clamp(54px, 8vw, 68px);
             font-weight: 700;
             letter-spacing: -2px;
-            display: block;
-            line-height: 1.1;
+            line-height: 1;
+            color: var(--text);
         }
 
         .bundle-term {
             color: var(--text-muted);
-            font-size: 15px;
-            display: block;
-            margin-top: 4px;
+            font-size: 13.5px;
+            margin-top: 6px;
         }
 
         .bundle-value {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
             color: var(--text-muted);
-            font-size: 14px;
-            margin-bottom: 36px;
+            font-size: 13.5px;
+            margin-bottom: 28px;
         }
 
-        .bundle-value .sep {
-            color: rgba(255, 255, 255, 0.15);
-        }
-
-        .bundle .btn-primary {
-            box-shadow: 0 4px 24px rgba(255, 107, 53, 0.35);
-        }
-
-        .bundle .btn-primary:hover {
-            box-shadow: 0 6px 32px rgba(255, 107, 53, 0.5);
+        .bundle-value strong {
+            color: var(--text-secondary);
+            font-weight: 500;
         }
 
         .bundle-buttons {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .bundle-buttons .btn {
             width: 100%;
-            max-width: 320px;
-            text-align: center;
+            max-width: 300px;
+        }
+
+        .bundle-note {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            margin-top: 4px;
         }
 
         /* ===== FOOTER ===== */
         footer {
-            padding: 48px 40px;
+            padding: 48px 40px 40px;
             text-align: center;
             border-top: 1px solid var(--border);
         }
@@ -504,45 +1212,43 @@
         .footer-brand {
             font-family: var(--font-display);
             font-weight: 700;
-            font-size: 16px;
+            font-size: 15.5px;
             color: var(--text-secondary);
-            margin-bottom: 14px;
+            margin-bottom: 16px;
         }
 
         .footer-links {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
 
         .footer-links a {
             color: var(--text-muted);
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
             transition: color 0.2s ease;
         }
 
-        .footer-links a:hover {
-            color: var(--orange);
-        }
+        .footer-links a:hover { color: var(--orange); }
 
         .footer-sep {
-            color: rgba(255, 255, 255, 0.1);
-            font-size: 14px;
+            color: rgba(255, 255, 255, 0.08);
+            font-size: 13px;
         }
 
         .footer-copy {
             color: var(--text-muted);
-            font-size: 13px;
+            font-size: 12px;
         }
 
         /* ===== SCROLL REVEAL ===== */
         .reveal {
             opacity: 0;
-            transform: translateY(28px);
-            transition: opacity 0.7s ease, transform 0.7s ease;
+            transform: translateY(20px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .reveal.visible {
@@ -550,63 +1256,51 @@
             transform: translateY(0);
         }
 
-        .reveal-delay-1 { transition-delay: 0.1s; }
-        .reveal-delay-2 { transition-delay: 0.2s; }
-        .reveal-delay-3 { transition-delay: 0.3s; }
-
         /* ===== RESPONSIVE ===== */
+        @media (max-width: 860px) {
+            .mb-demo { max-width: 520px; }
+        }
+
         @media (max-width: 768px) {
             .nav-inner { padding: 0 20px; }
             .nav-actions .btn-outline { display: none; }
 
-            .hero { padding: 130px 24px 80px; }
+            .hero { padding: 110px 20px 60px; }
+            .mb-demo { margin-bottom: 48px; }
+            .mb-menu:not(.mb-menu-primary) { display: none; }
+            .mb-apple { margin-right: 4px; }
+            .mb-status { display: none; }
+            .mb-panel { width: 260px; }
 
-            .hero-logo {
-                width: 56px;
-                height: 56px;
-                border-radius: 14px;
-                margin-bottom: 22px;
-            }
-
-            .apps { padding: 60px 24px 80px; }
-
+            .apps { padding: 70px 20px 90px; }
             .app-grid {
                 grid-template-columns: 1fr;
-                max-width: 420px;
+                max-width: 440px;
+                margin: 0 auto;
             }
 
-            .app-grid {
-                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            }
+            .bundle { padding: 70px 20px 90px; }
+            .bundle-icons img { width: 34px; height: 34px; }
 
-            .app-card { padding: 28px; }
+            .hero-actions { flex-direction: column; align-items: center; }
+            .hero-actions .btn { width: 100%; max-width: 260px; }
 
-            .card-actions {
-                flex-direction: column;
-            }
+            .card-actions { flex-direction: column; }
 
-            .bundle { padding: 80px 24px; }
-
-            .bundle-value {
-                flex-direction: column;
-                gap: 4px;
-            }
-
-            .bundle-value .sep { display: none; }
-
-            .hero-actions {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .hero-actions .btn { width: 100%; max-width: 280px; }
-
-            footer { padding: 36px 24px; }
+            footer { padding: 40px 20px 32px; }
         }
 
-        @media (max-width: 380px) {
-            .hero h1 { font-size: 40px; }
+        @media (max-width: 400px) {
             .bundle-price { font-size: 48px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
         }
     </style>
     <!-- Google Analytics -->
@@ -617,6 +1311,115 @@
         gtag('js', new Date());
         gtag('config', 'G-9VB76QH7EG');
     </script>
+
+    <!-- Shared SVG icon sprite -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <!-- Menu bar monochrome icons -->
+            <symbol id="i-wrench" viewBox="0 0 24 24">
+                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </symbol>
+            <symbol id="i-monitor" viewBox="0 0 16 16">
+                <rect x="1.5" y="2.5" width="13" height="9" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M5.5 14h5M8 11.5v2.5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </symbol>
+            <symbol id="i-timer" viewBox="0 0 16 16">
+                <circle cx="8" cy="9" r="5.5" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M8 6.5V9l1.8 1.2M6 1.5h4M8 1.5V3.5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </symbol>
+            <symbol id="i-mic" viewBox="0 0 16 16">
+                <rect x="6" y="1.5" width="4" height="7.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M3.5 8A4.5 4.5 0 0 0 12.5 8M8 12.5V15M5.5 15h5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </symbol>
+            <symbol id="i-clip" viewBox="0 0 16 16">
+                <rect x="3" y="3" width="10" height="11.5" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <rect x="5.5" y="1.5" width="5" height="3" rx="0.5" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M5.5 8h5M5.5 10.5h3" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </symbol>
+            <symbol id="i-speaker" viewBox="0 0 16 16">
+                <path d="M7 3L3.5 6H1.5v4H3.5L7 13V3z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+                <path d="M9.5 5.5a3 3 0 0 1 0 5M11.5 3.5a5 5 0 0 1 0 9" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </symbol>
+            <symbol id="i-activity" viewBox="0 0 16 16">
+                <path d="M1.5 8h3l2-5 3 10 2-5h3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+            </symbol>
+            <symbol id="i-tray" viewBox="0 0 16 16">
+                <rect x="1.5" y="2.5" width="13" height="11" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M1.5 9.5h3l1.5 2h4l1.5-2h3" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+            </symbol>
+            <symbol id="i-dropper" viewBox="0 0 16 16">
+                <path d="M10.5 2l3.5 3.5-2 2-3.5-3.5z M8 4l-5 5v3h3l5-5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+            </symbol>
+            <!-- UI icons -->
+            <symbol id="i-apple" viewBox="0 0 14 14">
+                <path d="M9.8 7.4c0-1.6 1.3-2.3 1.3-2.3-.7-1-1.9-1.2-2.3-1.2-1-.1-1.9.6-2.4.6s-1.3-.6-2.1-.6c-1.1 0-2.1.6-2.7 1.6-1.1 2-.3 4.9.9 6.5.5.8 1.2 1.7 2 1.6.8 0 1.1-.5 2.1-.5s1.3.5 2.1.5c.9 0 1.5-.8 2-1.6.6-.9.9-1.8.9-1.8s-1.8-.7-1.8-2.8zM8.1 2.6c.4-.5.7-1.2.6-1.9-.6 0-1.4.4-1.8.9-.4.4-.7 1.1-.6 1.8.7.1 1.4-.3 1.8-.8z" fill="currentColor"/>
+            </symbol>
+            <symbol id="i-wifi" viewBox="0 0 16 16">
+                <path d="M1.5 6c4-3 9-3 13 0M3.5 8.5c3-2 6-2 9 0M5.5 11c2-1 3-1 5 0M8 13h.01" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            </symbol>
+            <symbol id="i-battery" viewBox="0 0 16 16">
+                <rect x="1.5" y="5" width="11" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <rect x="3" y="6.5" width="6" height="3" fill="currentColor"/>
+                <path d="M14 7v2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </symbol>
+            <!-- Row icons -->
+            <symbol id="i-sun" viewBox="0 0 16 16">
+                <circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M8 1.5v2M8 12.5v2M1.5 8h2M12.5 8h2M3.3 3.3l1.4 1.4M11.3 11.3l1.4 1.4M3.3 12.7l1.4-1.4M11.3 4.7l1.4-1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </symbol>
+            <symbol id="i-contrast" viewBox="0 0 16 16">
+                <circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M8 2a6 6 0 0 0 0 12z" fill="currentColor"/>
+            </symbol>
+            <symbol id="i-volume" viewBox="0 0 16 16">
+                <path d="M7 3L3.5 6H1.5v4H3.5L7 13V3z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+                <path d="M9.5 5.5a3 3 0 0 1 0 5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </symbol>
+            <symbol id="i-pause" viewBox="0 0 16 16">
+                <rect x="4" y="3" width="2.5" height="10" rx="0.5" fill="currentColor"/>
+                <rect x="9.5" y="3" width="2.5" height="10" rx="0.5" fill="currentColor"/>
+            </symbol>
+            <symbol id="i-settings" viewBox="0 0 16 16">
+                <circle cx="8" cy="8" r="2.2" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5l1.5-1.5M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </symbol>
+            <symbol id="i-history" viewBox="0 0 16 16">
+                <path d="M2 8a6 6 0 1 0 2-4.5M2 2v3h3" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 5.5V8l1.5 1.5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </symbol>
+            <symbol id="i-warn" viewBox="0 0 16 16">
+                <path d="M8 2L14.5 13h-13z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+                <path d="M8 6.5v3M8 11h.01" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            </symbol>
+            <symbol id="i-power" viewBox="0 0 16 16">
+                <path d="M11.5 4a5.5 5.5 0 1 1-7 0M8 1.5v6" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </symbol>
+            <symbol id="i-app" viewBox="0 0 16 16">
+                <rect x="2" y="2" width="5" height="5" rx="0.5" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <rect x="9" y="2" width="5" height="5" rx="0.5" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <rect x="2" y="9" width="5" height="5" rx="0.5" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <rect x="9" y="9" width="5" height="5" rx="0.5" fill="none" stroke="currentColor" stroke-width="1.2"/>
+            </symbol>
+            <symbol id="i-share" viewBox="0 0 16 16">
+                <path d="M8 2v8M5.5 4.5L8 2l2.5 2.5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M3 8v4.5a1.5 1.5 0 0 0 1.5 1.5h7a1.5 1.5 0 0 0 1.5-1.5V8" fill="none" stroke="currentColor" stroke-width="1.2"/>
+            </symbol>
+            <symbol id="i-search" viewBox="0 0 16 16">
+                <circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </symbol>
+            <symbol id="i-mute-mic" viewBox="0 0 16 16">
+                <rect x="6" y="1.5" width="4" height="7.5" rx="2" fill="currentColor"/>
+                <path d="M3.5 8A4.5 4.5 0 0 0 12.5 8M8 12.5V15" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </symbol>
+            <symbol id="i-trash" viewBox="0 0 16 16">
+                <path d="M3 4h10M6 4V2.5h4V4M4.5 4l.5 9a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1l.5-9" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </symbol>
+            <symbol id="i-chevron" viewBox="0 0 16 16">
+                <path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </symbol>
+        </defs>
+    </svg>
 </head>
 <body>
 
@@ -636,13 +1439,236 @@
     <!-- HERO -->
     <section class="hero">
         <div class="hero-inner">
-            <img src="Images/teenyappslogo.png" alt="" class="hero-logo reveal">
-            <h1 class="reveal reveal-delay-1">TeenyApps</h1>
-            <p class="tagline reveal reveal-delay-2">Small tools. Serious utility.</p>
-            <p class="subtitle reveal reveal-delay-2">No subscriptions. No bloat. No accounts. Just focused Mac utilities that live in your menu bar and do exactly what you need.</p>
-            <div class="hero-actions reveal reveal-delay-3">
-                <a href="#apps" class="btn btn-outline">See the Apps</a>
-                <a href="#bundle" class="btn btn-primary">Get the Bundle</a>
+
+            <!-- Signature moment: live menu bar demo -->
+            <div class="mb-demo" aria-hidden="true">
+                <div class="mb">
+                    <span class="mb-apple"><svg><use href="#i-apple"/></svg></span>
+                    <span class="mb-menu mb-menu-primary">Finder</span>
+                    <span class="mb-menu">File</span>
+                    <span class="mb-menu">Edit</span>
+                    <span class="mb-menu">View</span>
+                    <span class="mb-menu">Go</span>
+                    <span class="mb-menu">Window</span>
+                    <span class="mb-menu">Help</span>
+                    <span class="mb-spacer"></span>
+                    <div class="mb-apps" id="mbApps">
+                        <button class="mb-app" data-i="0" aria-label="TeenyTool"><svg><use href="#i-wrench"/></svg></button>
+                        <button class="mb-app" data-i="1" aria-label="TeenyDisplay"><svg><use href="#i-monitor"/></svg></button>
+                        <button class="mb-app" data-i="2" aria-label="TeenyScreeny"><svg><use href="#i-timer"/></svg></button>
+                        <button class="mb-app" data-i="3" aria-label="TeenyMute"><svg><use href="#i-mic"/></svg></button>
+                        <button class="mb-app active" data-i="4" aria-label="TeenyClip"><svg><use href="#i-clip"/></svg></button>
+                        <button class="mb-app" data-i="5" aria-label="TeenySound"><svg><use href="#i-speaker"/></svg></button>
+                        <button class="mb-app" data-i="6" aria-label="TeenyStat"><svg><use href="#i-activity"/></svg></button>
+                        <button class="mb-app" data-i="7" aria-label="TeenyShelf"><svg><use href="#i-tray"/></svg></button>
+                        <button class="mb-app" data-i="8" aria-label="TeenyColor"><svg><use href="#i-dropper"/></svg></button>
+                    </div>
+                    <span class="mb-status"><svg><use href="#i-wifi"/></svg></span>
+                    <span class="mb-status"><svg><use href="#i-battery"/></svg></span>
+                    <span class="mb-clock" id="mbClock">9:41</span>
+                </div>
+
+                <div class="mb-panel-wrap">
+                    <div class="mb-panel">
+                        <div class="mb-stage" id="mbStage">
+
+                            <!-- 0: TeenyTool -->
+                            <div class="mb-slide" data-i="0">
+                                <div class="tp-head">
+                                    <span class="tp-head-icon"><svg><use href="#i-wrench"/></svg></span>
+                                    <span class="tp-head-title">TeenyTool</span>
+                                    <span class="tp-head-meta">75+</span>
+                                </div>
+                                <div class="tp-label">Favorites</div>
+                                <div class="tp-row" data-tool-row="0"><span class="tp-row-icon sq">Aa</span><span class="tp-row-label">Case Converter</span><span class="tp-row-star">&#9733;</span></div>
+                                <div class="tp-row" data-tool-row="1"><span class="tp-row-icon sq">{}</span><span class="tp-row-label">JSON Formatter</span><span class="tp-row-star">&#9733;</span></div>
+                                <div class="tp-row" data-tool-row="2"><span class="tp-row-icon sq">#</span><span class="tp-row-label">Hash Generator</span><span class="tp-row-star">&#9733;</span></div>
+                                <div class="tp-row" data-tool-row="3"><span class="tp-row-icon sq">&#9776;</span><span class="tp-row-label">Word Counter</span><span class="tp-row-star">&#9733;</span></div>
+                                <div class="tp-sep"></div>
+                                <div class="tp-row"><span class="tp-row-icon"><svg><use href="#i-app"/></svg></span><span class="tp-row-label">Open App</span><span class="tp-kbd">&#8984;&#8997;T</span></div>
+                                <div class="tp-row"><span class="tp-row-icon"><svg><use href="#i-settings"/></svg></span><span class="tp-row-label">Settings</span></div>
+                                <div class="tp-row"><span class="tp-row-icon"><svg><use href="#i-power"/></svg></span><span class="tp-row-label">Quit TeenyTool</span></div>
+                            </div>
+
+                            <!-- 1: TeenyDisplay -->
+                            <div class="mb-slide" data-i="1">
+                                <div class="tp-head">
+                                    <span class="tp-head-icon"><svg><use href="#i-monitor"/></svg></span>
+                                    <span class="tp-head-title">TeenyDisplay</span>
+                                </div>
+                                <div class="tp-label">Dell U2719D</div>
+                                <div class="demo-display">
+                                    <div class="tp-row disp-row-1"><span class="tp-row-icon"><svg><use href="#i-sun"/></svg></span><div class="disp-track"><div class="disp-fill"></div></div><span class="tp-row-meta">75%</span></div>
+                                    <div class="tp-row disp-row-2"><span class="tp-row-icon"><svg><use href="#i-contrast"/></svg></span><div class="disp-track"><div class="disp-fill"></div></div><span class="tp-row-meta">60%</span></div>
+                                    <div class="tp-row disp-row-3"><span class="tp-row-icon"><svg><use href="#i-volume"/></svg></span><div class="disp-track"><div class="disp-fill"></div></div><span class="tp-row-meta">42%</span></div>
+                                </div>
+                                <div class="tp-sep"></div>
+                                <div class="tp-row"><span class="tp-row-label" style="color: var(--text-secondary);">Input</span><span class="tp-row-meta" style="color: var(--text);">HDMI 1</span><span class="tp-row-icon" style="opacity:0.5"><svg><use href="#i-chevron"/></svg></span></div>
+                                <div class="tp-row"><span class="tp-row-icon"><svg><use href="#i-settings"/></svg></span><span class="tp-row-label">Settings</span></div>
+                            </div>
+
+                            <!-- 2: TeenyScreeny -->
+                            <div class="mb-slide" data-i="2">
+                                <div class="demo-screeny">
+                                    <div class="screeny-label">Screen time today</div>
+                                    <div class="screeny-time">2m <span class="sec" data-screeny-sec>06</span>s</div>
+                                    <div class="screeny-row"><span>Yesterday</span><span class="val">6h 33m</span></div>
+                                    <div class="screeny-row"><span>7-day average</span><span class="val">5h 16m</span></div>
+                                    <div class="screeny-chart">
+                                        <span class="bar" style="height:30%"></span>
+                                        <span class="bar" style="height:50%"></span>
+                                        <span class="bar" style="height:20%"></span>
+                                        <span class="bar" style="height:70%"></span>
+                                        <span class="bar" style="height:45%"></span>
+                                        <span class="bar" style="height:60%"></span>
+                                        <span class="bar hi" style="height:85%"></span>
+                                    </div>
+                                </div>
+                                <div class="tp-sep"></div>
+                                <div class="screeny-action"><svg><use href="#i-pause"/></svg> Pause tracking</div>
+                                <div class="screeny-action-row">
+                                    <div class="screeny-action"><svg><use href="#i-history"/></svg> History…</div>
+                                    <div class="screeny-action"><svg><use href="#i-settings"/></svg> Settings…</div>
+                                </div>
+                                <div class="tp-sep"></div>
+                                <div class="screeny-trial-row">
+                                    <div class="quit">Quit</div>
+                                </div>
+                            </div>
+
+                            <!-- 3: TeenyMute -->
+                            <div class="mb-slide" data-i="3">
+                                <div class="tp-head">
+                                    <span class="tp-head-icon"><svg><use href="#i-mic"/></svg></span>
+                                    <span class="tp-head-title">TeenyMute</span>
+                                </div>
+                                <div class="tp-label">Status</div>
+                                <div class="mute-status">
+                                    <div class="mute-mic"><svg><use href="#i-mute-mic"/></svg></div>
+                                    <div class="mute-info">
+                                        <div class="mute-state"><span class="mute-dot"></span> Listening</div>
+                                        <div class="mute-device">MacBook Pro Microphone</div>
+                                    </div>
+                                </div>
+                                <div class="tp-sep"></div>
+                                <div class="tp-label">Mode</div>
+                                <div class="mute-mode">
+                                    <div class="mute-opt selected"><span class="radio"></span><span class="lbl">Toggle</span><span class="tp-kbd">&#8963;&#8997;M</span></div>
+                                    <div class="mute-opt"><span class="radio"></span><span class="lbl">Push-to-talk</span><span class="tp-kbd">&#8997;</span></div>
+                                </div>
+                                <div class="tp-sep"></div>
+                                <div class="tp-row"><span class="tp-row-icon"><svg><use href="#i-settings"/></svg></span><span class="tp-row-label">Settings</span></div>
+                            </div>
+
+                            <!-- 4: TeenyClip -->
+                            <div class="mb-slide active" data-i="4">
+                                <div class="tp-head">
+                                    <span class="tp-head-icon"><svg><use href="#i-clip"/></svg></span>
+                                    <span class="tp-head-title">TeenyClip</span>
+                                    <span class="tp-head-meta">100</span>
+                                </div>
+                                <div class="tp-label">Recent</div>
+                                <div class="clip-item"><span class="type">URL</span><span class="txt">reddit.com/r/macapps</span><span class="star">&#9733;</span></div>
+                                <div class="clip-item"><span class="type">Text</span><span class="txt">Q2 strategy &mdash; draft notes</span></div>
+                                <div class="clip-item"><span class="type">Email</span><span class="txt">contact@teenyapps.com</span></div>
+                                <div class="clip-item"><span class="type">Hex</span><span class="txt">#FF6B35</span></div>
+                                <div class="tp-sep"></div>
+                                <div class="tp-row"><span class="tp-row-icon"><svg><use href="#i-search"/></svg></span><span class="tp-row-label" style="color:var(--text-muted)">Search clipboard…</span></div>
+                            </div>
+
+                            <!-- 5: TeenySound -->
+                            <div class="mb-slide" data-i="5">
+                                <div class="tp-head">
+                                    <span class="tp-head-icon"><svg><use href="#i-speaker"/></svg></span>
+                                    <span class="tp-head-title">TeenySound</span>
+                                </div>
+                                <div class="tp-label">Playing now</div>
+                                <div class="demo-sound">
+                                    <div class="sound-row"><span class="sound-app-icon spot">S</span><span class="sound-app-name">Spotify</span><div class="disp-track"><div class="disp-fill"></div></div><span class="sound-val">82%</span></div>
+                                    <div class="sound-row"><span class="sound-app-icon chr">C</span><span class="sound-app-name">Chrome</span><div class="disp-track"><div class="disp-fill"></div></div><span class="sound-val">45%</span></div>
+                                    <div class="sound-row"><span class="sound-app-icon zm">Z</span><span class="sound-app-name">Zoom</span><div class="disp-track"><div class="disp-fill"></div></div><span class="sound-val">35%</span></div>
+                                </div>
+                                <div class="tp-sep"></div>
+                                <div class="tp-row"><span class="tp-row-icon"><svg><use href="#i-volume"/></svg></span><span class="tp-row-label">Mute all</span><span class="tp-kbd">&#8984;&#8997;M</span></div>
+                            </div>
+
+                            <!-- 6: TeenyStat -->
+                            <div class="mb-slide" data-i="6">
+                                <div class="tp-head">
+                                    <span class="tp-head-icon"><svg><use href="#i-activity"/></svg></span>
+                                    <span class="tp-head-title">TeenyStat</span>
+                                </div>
+                                <div class="stat-block">
+                                    <div class="stat-head-row"><span class="stat-lbl">CPU</span><span class="stat-val" data-stat-cpu>42%</span></div>
+                                    <svg class="stat-spark" viewBox="0 0 100 20" preserveAspectRatio="none"><path class="stat-spark-area" d="M0,14 L10,12 L20,15 L30,8 L40,11 L50,5 L60,9 L70,4 L80,8 L90,3 L100,6 L100,20 L0,20 Z"/><path class="stat-spark-line" d="M0,14 L10,12 L20,15 L30,8 L40,11 L50,5 L60,9 L70,4 L80,8 L90,3 L100,6"/></svg>
+                                </div>
+                                <div class="stat-block">
+                                    <div class="stat-head-row"><span class="stat-lbl">Memory</span><span class="stat-val" data-stat-mem>67%</span></div>
+                                    <svg class="stat-spark" viewBox="0 0 100 20" preserveAspectRatio="none"><path class="stat-spark-line" d="M0,10 L15,11 L30,9 L45,10 L60,12 L75,11 L90,10 L100,11"/></svg>
+                                </div>
+                                <div class="stat-block">
+                                    <div class="stat-head-row"><span class="stat-lbl">Fan</span><span class="stat-val">2400 RPM</span></div>
+                                </div>
+                                <div class="tp-sep"></div>
+                                <div class="tp-row"><span class="tp-row-icon"><svg><use href="#i-settings"/></svg></span><span class="tp-row-label">Settings</span></div>
+                            </div>
+
+                            <!-- 7: TeenyShelf -->
+                            <div class="mb-slide" data-i="7">
+                                <div class="tp-head">
+                                    <span class="tp-head-icon"><svg><use href="#i-tray"/></svg></span>
+                                    <span class="tp-head-title">TeenyShelf</span>
+                                    <span class="tp-head-meta">3</span>
+                                </div>
+                                <div class="tp-label">Drop files here</div>
+                                <div class="shelf-drop">
+                                    <div class="shelf-file"></div>
+                                    <div class="shelf-file"></div>
+                                    <div class="shelf-file"></div>
+                                </div>
+                                <div class="tp-sep"></div>
+                                <div class="tp-row"><span class="tp-row-icon"><svg><use href="#i-trash"/></svg></span><span class="tp-row-label">Clear shelf</span></div>
+                                <div class="tp-row"><span class="tp-row-icon"><svg><use href="#i-settings"/></svg></span><span class="tp-row-label">Settings</span></div>
+                            </div>
+
+                            <!-- 8: TeenyColor -->
+                            <div class="mb-slide" data-i="8">
+                                <div class="tp-head">
+                                    <span class="tp-head-icon"><svg><use href="#i-dropper"/></svg></span>
+                                    <span class="tp-head-title">teenycolor</span>
+                                    <span class="tp-head-meta">4</span>
+                                </div>
+                                <div class="color-pick-btn"><svg><use href="#i-dropper"/></svg> Pick Color</div>
+                                <div class="tp-label">Recent</div>
+                                <div class="color-recent">
+                                    <div class="color-swatch-row"><span class="color-swatch" style="background:#052A40"></span>#052A40</div>
+                                    <div class="color-swatch-row"><span class="color-swatch" style="background:#0D0A10"></span>#0D0A10</div>
+                                    <div class="color-swatch-row"><span class="color-swatch" style="background:#057CFD"></span>#057CFD</div>
+                                    <div class="color-swatch-row"><span class="color-swatch" style="background:#FE8153"></span>#FE8153</div>
+                                </div>
+                                <div class="tp-sep"></div>
+                                <div class="color-footer">
+                                    <div class="left">
+                                        <span class="ic"><svg><use href="#i-settings"/></svg></span>
+                                        <span class="ic"><svg><use href="#i-share"/></svg></span>
+                                    </div>
+                                    <div class="right">
+                                        <span class="ic"><svg><use href="#i-power"/></svg></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h1>TeenyApps</h1>
+            <p class="tagline">Small tools. Serious utility.</p>
+            <p class="subtitle">Focused Mac utilities that live in your menu bar and do exactly what you need. No subscriptions. No accounts.</p>
+            <div class="hero-actions">
+                <a href="#apps" class="btn btn-outline btn-large">See the apps</a>
+                <a href="#bundle" class="btn btn-primary btn-large">Get the bundle</a>
             </div>
         </div>
     </section>
@@ -650,128 +1676,303 @@
     <!-- APPS -->
     <section class="apps" id="apps">
         <div class="apps-inner">
-            <div class="section-header reveal">
-                <h2>The Apps</h2>
-                <p>Focused utilities that live in your menu bar. Buy what you need, skip what you don't.</p>
+            <div class="section-head reveal">
+                <h2>The apps</h2>
+                <p>Nine utilities. Each one does a single thing, extremely well.</p>
             </div>
+
             <div class="app-grid">
 
                 <!-- TeenyTool -->
-                <div class="app-card reveal">
-                    <img src="Images/teenytool-appicon.png" alt="TeenyTool" class="app-icon">
-                    <h3>TeenyTool</h3>
-                    <div class="app-price">$14.99 <span>one-time</span></div>
-                    <p class="app-desc">75+ tools in your Mac menu bar. Text converters, generators, formatters, and more. All the tools you Google, without the sketchy websites. Always one click away.</p>
+                <article class="app-card reveal">
+                    <div class="app-head">
+                        <img src="Images/teenytool-appicon.png" alt="TeenyTool" class="app-icon-img">
+                        <div class="app-head-text">
+                            <h3>TeenyTool</h3>
+                            <div class="app-price">$14.99<em>one-time</em></div>
+                        </div>
+                    </div>
+                    <div class="app-preview">
+                        <div class="mb-panel" style="box-shadow:none">
+                            <div class="tp-head">
+                                <span class="tp-head-icon"><svg><use href="#i-wrench"/></svg></span>
+                                <span class="tp-head-title">TeenyTool</span>
+                                <span class="tp-head-meta">75+</span>
+                            </div>
+                            <div class="tp-label">Favorites</div>
+                            <div class="tp-row" data-card-tool="0"><span class="tp-row-icon sq">Aa</span><span class="tp-row-label">Case Converter</span><span class="tp-row-star">&#9733;</span></div>
+                            <div class="tp-row" data-card-tool="1"><span class="tp-row-icon sq">{}</span><span class="tp-row-label">JSON Formatter</span><span class="tp-row-star">&#9733;</span></div>
+                            <div class="tp-row" data-card-tool="2"><span class="tp-row-icon sq">#</span><span class="tp-row-label">Hash Generator</span><span class="tp-row-star">&#9733;</span></div>
+                            <div class="tp-sep"></div>
+                            <div class="tp-row"><span class="tp-row-icon"><svg><use href="#i-app"/></svg></span><span class="tp-row-label">Open App</span><span class="tp-kbd">&#8984;&#8997;T</span></div>
+                        </div>
+                    </div>
+                    <p class="app-desc">75+ tools in your Mac menu bar. Text converters, generators, formatters, and more. All the tools you Google, without the sketchy websites.</p>
                     <div class="card-actions">
                         <a href="https://teenytool.com/downloads/TeenyTool.dmg" class="btn btn-outline btn-sm" download>Download</a>
                         <a href="https://buy.polar.sh/polar_cl_siOuJZCjLelM6W5xaCDGZ4oOQYvyDg9q5X8hu14ZHU0" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
-                    <a href="https://teenytool.com" class="learn-more" target="_blank" rel="noopener">Learn more &#8594;</a>
-                </div>
+                    <a href="https://teenytool.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
+                </article>
 
                 <!-- TeenyDisplay -->
-                <div class="app-card reveal">
-                    <img src="Images/teenydisplay-appicon.png" alt="TeenyDisplay" class="app-icon">
-                    <h3>TeenyDisplay</h3>
-                    <div class="app-price">$9.99 <span>one-time</span></div>
+                <article class="app-card reveal">
+                    <div class="app-head">
+                        <img src="Images/teenydisplay-appicon.png" alt="TeenyDisplay" class="app-icon-img">
+                        <div class="app-head-text">
+                            <h3>TeenyDisplay</h3>
+                            <div class="app-price">$9.99<em>one-time</em></div>
+                        </div>
+                    </div>
+                    <div class="app-preview">
+                        <div class="mb-panel" style="box-shadow:none">
+                            <div class="tp-head">
+                                <span class="tp-head-icon"><svg><use href="#i-monitor"/></svg></span>
+                                <span class="tp-head-title">TeenyDisplay</span>
+                            </div>
+                            <div class="tp-label">Dell U2719D</div>
+                            <div class="demo-display">
+                                <div class="tp-row disp-row-1"><span class="tp-row-icon"><svg><use href="#i-sun"/></svg></span><div class="disp-track"><div class="disp-fill"></div></div><span class="tp-row-meta">75%</span></div>
+                                <div class="tp-row disp-row-2"><span class="tp-row-icon"><svg><use href="#i-contrast"/></svg></span><div class="disp-track"><div class="disp-fill"></div></div><span class="tp-row-meta">60%</span></div>
+                                <div class="tp-row disp-row-3"><span class="tp-row-icon"><svg><use href="#i-volume"/></svg></span><div class="disp-track"><div class="disp-fill"></div></div><span class="tp-row-meta">42%</span></div>
+                            </div>
+                        </div>
+                    </div>
                     <p class="app-desc">Control your external monitor's brightness, contrast, volume, and input source from the menu bar. Full DDC/CI support, keyboard shortcuts, and display presets.</p>
                     <div class="card-actions">
                         <a href="https://teenydisplay.com/downloads/TeenyDisplay.dmg" class="btn btn-outline btn-sm" download>Download</a>
                         <a href="https://buy.polar.sh/polar_cl_w3ETJIXjsNDC2rFlO2nqH2ErZDPMEshgbEEwQ0UFA1Q" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
-                    <a href="https://teenydisplay.com" class="learn-more" target="_blank" rel="noopener">Learn more &#8594;</a>
-                </div>
+                    <a href="https://teenydisplay.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
+                </article>
 
                 <!-- TeenyScreeny -->
-                <div class="app-card reveal">
-                    <img src="Images/teenyscreeny-appicon.png" alt="TeenyScreeny" class="app-icon">
-                    <h3>TeenyScreeny</h3>
-                    <div class="app-price">$4.99 <span>one-time</span></div>
-                    <p class="app-desc">A live screen time counter in your menu bar. Glance up, see the number, change your behavior. Track streaks, spot patterns, and stay aware without effort.</p>
+                <article class="app-card reveal">
+                    <div class="app-head">
+                        <img src="Images/teenyscreeny-appicon.png" alt="TeenyScreeny" class="app-icon-img">
+                        <div class="app-head-text">
+                            <h3>TeenyScreeny</h3>
+                            <div class="app-price">$4.99<em>one-time</em></div>
+                        </div>
+                    </div>
+                    <div class="app-preview">
+                        <div class="mb-panel" style="box-shadow:none">
+                            <div class="demo-screeny">
+                                <div class="screeny-label">Screen time today</div>
+                                <div class="screeny-time">2m <span class="sec" data-card-sec>06</span>s</div>
+                                <div class="screeny-row"><span>Yesterday</span><span class="val">6h 33m</span></div>
+                                <div class="screeny-row"><span>7-day average</span><span class="val">5h 16m</span></div>
+                            </div>
+                            <div class="tp-sep"></div>
+                            <div class="screeny-action"><svg><use href="#i-pause"/></svg> Pause tracking</div>
+                        </div>
+                    </div>
+                    <p class="app-desc">A live screen time counter in your menu bar. Glance up, see the number, change your behavior. Track streaks and spot patterns without effort.</p>
                     <div class="card-actions">
                         <a href="https://teenyscreeny.com/downloads/TeenyScreeny.dmg" class="btn btn-outline btn-sm" download>Download</a>
                         <a href="https://buy.polar.sh/polar_cl_h8MDjyFs6btS1eSaJ9bbDszDNC9KghQ57WvTa4LdP4j" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
-                    <a href="https://teenyscreeny.com" class="learn-more" target="_blank" rel="noopener">Learn more &#8594;</a>
-                </div>
+                    <a href="https://teenyscreeny.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
+                </article>
 
                 <!-- TeenyMute -->
-                <div class="app-card reveal">
-                    <img src="Images/teenymute-appicon.png" alt="TeenyMute" class="app-icon">
-                    <h3>TeenyMute</h3>
-                    <div class="app-price">$4.99 <span>one-time</span></div>
+                <article class="app-card reveal">
+                    <div class="app-head">
+                        <img src="Images/teenymute-appicon.png" alt="TeenyMute" class="app-icon-img">
+                        <div class="app-head-text">
+                            <h3>TeenyMute</h3>
+                            <div class="app-price">$4.99<em>one-time</em></div>
+                        </div>
+                    </div>
+                    <div class="app-preview">
+                        <div class="mb-panel" style="box-shadow:none">
+                            <div class="tp-head">
+                                <span class="tp-head-icon"><svg><use href="#i-mic"/></svg></span>
+                                <span class="tp-head-title">TeenyMute</span>
+                            </div>
+                            <div class="tp-label">Status</div>
+                            <div class="mute-status">
+                                <div class="mute-mic"><svg><use href="#i-mute-mic"/></svg></div>
+                                <div class="mute-info">
+                                    <div class="mute-state"><span class="mute-dot"></span> Listening</div>
+                                    <div class="mute-device">MacBook Pro Microphone</div>
+                                </div>
+                            </div>
+                            <div class="tp-sep"></div>
+                            <div class="mute-mode">
+                                <div class="mute-opt selected"><span class="radio"></span><span class="lbl">Toggle</span><span class="tp-kbd">&#8963;&#8997;M</span></div>
+                            </div>
+                        </div>
+                    </div>
                     <p class="app-desc">One-click mic mute/unmute in your menu bar with a global hotkey. Always know your mic state. Toggle and push-to-talk modes.</p>
                     <div class="card-actions">
                         <a href="https://teenymute.com/downloads/TeenyMute.dmg" class="btn btn-outline btn-sm" download>Download</a>
                         <a href="https://buy.polar.sh/polar_cl_LGGnszR5nHsuDiP5zukSuWXsi6lxI6nJp0y231xDZ2W" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
-                    <a href="https://teenymute.com" class="learn-more" target="_blank" rel="noopener">Learn more &#8594;</a>
-                </div>
+                    <a href="https://teenymute.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
+                </article>
 
                 <!-- TeenyClip -->
-                <div class="app-card reveal">
-                    <img src="Images/teenyclip-appicon.png" alt="TeenyClip" class="app-icon">
-                    <h3>TeenyClip</h3>
-                    <div class="app-price">$4.99 <span>one-time</span></div>
+                <article class="app-card reveal">
+                    <div class="app-head">
+                        <img src="Images/teenyclip-appicon.png" alt="TeenyClip" class="app-icon-img">
+                        <div class="app-head-text">
+                            <h3>TeenyClip</h3>
+                            <div class="app-price">$4.99<em>one-time</em></div>
+                        </div>
+                    </div>
+                    <div class="app-preview">
+                        <div class="mb-panel" style="box-shadow:none">
+                            <div class="tp-head">
+                                <span class="tp-head-icon"><svg><use href="#i-clip"/></svg></span>
+                                <span class="tp-head-title">TeenyClip</span>
+                                <span class="tp-head-meta">100</span>
+                            </div>
+                            <div class="tp-label">Recent</div>
+                            <div class="clip-item"><span class="type">URL</span><span class="txt">reddit.com/r/macapps</span><span class="star">&#9733;</span></div>
+                            <div class="clip-item"><span class="type">Text</span><span class="txt">Q2 strategy &mdash; draft notes</span></div>
+                            <div class="clip-item"><span class="type">Email</span><span class="txt">contact@teenyapps.com</span></div>
+                            <div class="clip-item"><span class="type">Hex</span><span class="txt">#FF6B35</span></div>
+                        </div>
+                    </div>
                     <p class="app-desc">Clipboard history manager. Stores your last 100 copies with search, pinned favorites, and a paste queue for sequential pasting.</p>
                     <div class="card-actions">
                         <a href="https://teenyclip.com/downloads/TeenyClip.dmg" class="btn btn-outline btn-sm" download>Download</a>
                         <a href="https://buy.polar.sh/polar_cl_XqJybhs4oYrCiytowUnsal8tvcQVU4Izt2bJw3zZ1Lm" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
-                    <a href="https://teenyclip.com" class="learn-more" target="_blank" rel="noopener">Learn more &#8594;</a>
-                </div>
+                    <a href="https://teenyclip.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
+                </article>
 
                 <!-- TeenySound -->
-                <div class="app-card reveal">
-                    <img src="Images/teenysound-appicon.png" alt="TeenySound" class="app-icon">
-                    <h3>TeenySound</h3>
-                    <div class="app-price">$9.99 <span>one-time</span></div>
+                <article class="app-card reveal">
+                    <div class="app-head">
+                        <img src="Images/teenysound-appicon.png" alt="TeenySound" class="app-icon-img">
+                        <div class="app-head-text">
+                            <h3>TeenySound</h3>
+                            <div class="app-price">$9.99<em>one-time</em></div>
+                        </div>
+                    </div>
+                    <div class="app-preview">
+                        <div class="mb-panel" style="box-shadow:none">
+                            <div class="tp-head">
+                                <span class="tp-head-icon"><svg><use href="#i-speaker"/></svg></span>
+                                <span class="tp-head-title">TeenySound</span>
+                            </div>
+                            <div class="tp-label">Playing now</div>
+                            <div class="demo-sound">
+                                <div class="sound-row"><span class="sound-app-icon spot">S</span><span class="sound-app-name">Spotify</span><div class="disp-track"><div class="disp-fill"></div></div><span class="sound-val">82%</span></div>
+                                <div class="sound-row"><span class="sound-app-icon chr">C</span><span class="sound-app-name">Chrome</span><div class="disp-track"><div class="disp-fill"></div></div><span class="sound-val">45%</span></div>
+                                <div class="sound-row"><span class="sound-app-icon zm">Z</span><span class="sound-app-name">Zoom</span><div class="disp-track"><div class="disp-fill"></div></div><span class="sound-val">35%</span></div>
+                            </div>
+                        </div>
+                    </div>
                     <p class="app-desc">Per-app volume control. Individual volume sliders for every app producing audio, plus a global mute-all hotkey.</p>
                     <div class="card-actions">
                         <a href="https://teenysound.com/downloads/TeenySound.dmg" class="btn btn-outline btn-sm" download>Download</a>
                         <a href="https://buy.polar.sh/polar_cl_ihdSRfNNQfoH8ebMIQQrM5SVE0LKQ5svqrO0G34z330" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
-                    <a href="https://teenysound.com" class="learn-more" target="_blank" rel="noopener">Learn more &#8594;</a>
-                </div>
+                    <a href="https://teenysound.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
+                </article>
 
                 <!-- TeenyStat -->
-                <div class="app-card reveal">
-                    <img src="Images/teenystat-appicon.png" alt="TeenyStat" class="app-icon">
-                    <h3>TeenyStat</h3>
-                    <div class="app-price">$4.99 <span>one-time</span></div>
+                <article class="app-card reveal">
+                    <div class="app-head">
+                        <img src="Images/teenystat-appicon.png" alt="TeenyStat" class="app-icon-img">
+                        <div class="app-head-text">
+                            <h3>TeenyStat</h3>
+                            <div class="app-price">$4.99<em>one-time</em></div>
+                        </div>
+                    </div>
+                    <div class="app-preview">
+                        <div class="mb-panel" style="box-shadow:none">
+                            <div class="tp-head">
+                                <span class="tp-head-icon"><svg><use href="#i-activity"/></svg></span>
+                                <span class="tp-head-title">TeenyStat</span>
+                            </div>
+                            <div class="stat-block">
+                                <div class="stat-head-row"><span class="stat-lbl">CPU</span><span class="stat-val" data-card-cpu>42%</span></div>
+                                <svg class="stat-spark" viewBox="0 0 100 20" preserveAspectRatio="none"><path class="stat-spark-area" d="M0,14 L10,12 L20,15 L30,8 L40,11 L50,5 L60,9 L70,4 L80,8 L90,3 L100,6 L100,20 L0,20 Z"/><path class="stat-spark-line" d="M0,14 L10,12 L20,15 L30,8 L40,11 L50,5 L60,9 L70,4 L80,8 L90,3 L100,6"/></svg>
+                            </div>
+                            <div class="stat-block">
+                                <div class="stat-head-row"><span class="stat-lbl">Memory</span><span class="stat-val">67%</span></div>
+                            </div>
+                            <div class="stat-block">
+                                <div class="stat-head-row"><span class="stat-lbl">Fan</span><span class="stat-val">2400 RPM</span></div>
+                            </div>
+                        </div>
+                    </div>
                     <p class="app-desc">System vitals at a glance. Fan speed, memory pressure, and CPU usage with color-coded thresholds and sparkline history.</p>
                     <div class="card-actions">
                         <a href="https://teenystat.com/downloads/TeenyStat.dmg" class="btn btn-outline btn-sm" download>Download</a>
                         <a href="https://buy.polar.sh/polar_cl_a59Bxpve12wjaySD7a22lFN5N3KhyRNGYCUcD0Ikrc2" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
-                    <a href="https://teenystat.com" class="learn-more" target="_blank" rel="noopener">Learn more &#8594;</a>
-                </div>
+                    <a href="https://teenystat.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
+                </article>
 
                 <!-- TeenyShelf -->
-                <div class="app-card reveal">
-                    <img src="Images/teenyshelf-appicon.png" alt="TeenyShelf" class="app-icon">
-                    <h3>TeenyShelf</h3>
-                    <div class="app-price">$4.99 <span>one-time</span></div>
+                <article class="app-card reveal">
+                    <div class="app-head">
+                        <img src="Images/teenyshelf-appicon.png" alt="TeenyShelf" class="app-icon-img">
+                        <div class="app-head-text">
+                            <h3>TeenyShelf</h3>
+                            <div class="app-price">$4.99<em>one-time</em></div>
+                        </div>
+                    </div>
+                    <div class="app-preview">
+                        <div class="mb-panel" style="box-shadow:none">
+                            <div class="tp-head">
+                                <span class="tp-head-icon"><svg><use href="#i-tray"/></svg></span>
+                                <span class="tp-head-title">TeenyShelf</span>
+                                <span class="tp-head-meta">3</span>
+                            </div>
+                            <div class="tp-label">Drop files here</div>
+                            <div class="shelf-drop">
+                                <div class="shelf-file"></div>
+                                <div class="shelf-file"></div>
+                                <div class="shelf-file"></div>
+                            </div>
+                        </div>
+                    </div>
                     <p class="app-desc">Drag-and-drop file staging area. Park files on a menu bar shelf while you navigate between folders, then drag them to their destination.</p>
                     <div class="card-actions">
                         <a href="https://teenyshelf.com/downloads/TeenyShelf.dmg" class="btn btn-outline btn-sm" download>Download</a>
                         <a href="https://buy.polar.sh/polar_cl_ybSb7Y2xDTWS0bUadZlPnvHQbHRIxc8iamgZs3rnjPg" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
-                    <a href="https://teenyshelf.com" class="learn-more" target="_blank" rel="noopener">Learn more &#8594;</a>
-                </div>
+                    <a href="https://teenyshelf.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
+                </article>
 
                 <!-- TeenyColor -->
-                <div class="app-card reveal">
-                    <img src="Images/teenycolor-appicon.png" alt="TeenyColor" class="app-icon">
-                    <h3>TeenyColor</h3>
-                    <div class="app-price">$4.99 <span>one-time</span></div>
+                <article class="app-card reveal">
+                    <div class="app-head">
+                        <img src="Images/teenycolor-appicon.png" alt="TeenyColor" class="app-icon-img">
+                        <div class="app-head-text">
+                            <h3>TeenyColor</h3>
+                            <div class="app-price">$4.99<em>one-time</em></div>
+                        </div>
+                    </div>
+                    <div class="app-preview">
+                        <div class="mb-panel" style="box-shadow:none">
+                            <div class="tp-head">
+                                <span class="tp-head-icon"><svg><use href="#i-dropper"/></svg></span>
+                                <span class="tp-head-title">teenycolor</span>
+                                <span class="tp-head-meta">4</span>
+                            </div>
+                            <div class="color-pick-btn"><svg><use href="#i-dropper"/></svg> Pick Color</div>
+                            <div class="tp-label">Recent</div>
+                            <div class="color-recent">
+                                <div class="color-swatch-row"><span class="color-swatch" style="background:#052A40"></span>#052A40</div>
+                                <div class="color-swatch-row"><span class="color-swatch" style="background:#057CFD"></span>#057CFD</div>
+                                <div class="color-swatch-row"><span class="color-swatch" style="background:#FE8153"></span>#FE8153</div>
+                            </div>
+                        </div>
+                    </div>
                     <p class="app-desc">Screen color picker with history. Grab any pixel's color, auto-copy as hex/RGB/HSL, keep a searchable history of picks with WCAG contrast ratios.</p>
                     <div class="card-actions">
                         <a href="https://teenycolor.com/downloads/TeenyColor.dmg" class="btn btn-outline btn-sm" download>Download</a>
                         <a href="https://buy.polar.sh/polar_cl_6o4mhi1rJ9arjSrFdRQvzKuHtyn9ieF1sVOUw2bzTip" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
-                    <a href="https://teenycolor.com" class="learn-more" target="_blank" rel="noopener">Learn more &#8594;</a>
-                </div>
+                    <a href="https://teenycolor.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
+                </article>
 
             </div>
         </div>
@@ -781,21 +1982,34 @@
     <section class="bundle" id="bundle">
         <div class="bundle-inner">
             <span class="bundle-badge reveal">Best Value</span>
-            <h2 class="reveal reveal-delay-1">Get Everything</h2>
-            <p class="bundle-pitch reveal reveal-delay-1">All 9 TeenyApps for one price. No expiration.</p>
-            <div class="bundle-price-wrap reveal reveal-delay-2">
-                <span class="bundle-price">$39.99</span>
-                <span class="bundle-term">one-time purchase, forever</span>
+            <h2 class="reveal">Get everything.</h2>
+            <p class="bundle-pitch reveal">All 9 TeenyApps for one price. No expiration. No nonsense.</p>
+
+            <div class="bundle-icons reveal">
+                <img src="Images/teenytool-appicon.png" alt="TeenyTool">
+                <img src="Images/teenydisplay-appicon.png" alt="TeenyDisplay">
+                <img src="Images/teenyscreeny-appicon.png" alt="TeenyScreeny">
+                <img src="Images/teenymute-appicon.png" alt="TeenyMute">
+                <img src="Images/teenyclip-appicon.png" alt="TeenyClip">
+                <img src="Images/teenysound-appicon.png" alt="TeenySound">
+                <img src="Images/teenystat-appicon.png" alt="TeenyStat">
+                <img src="Images/teenyshelf-appicon.png" alt="TeenyShelf">
+                <img src="Images/teenycolor-appicon.png" alt="TeenyColor">
             </div>
-            <div class="bundle-value reveal reveal-delay-2">
-                <span>9 apps individually: $64.91</span>
-                <span class="sep">&middot;</span>
-                <span>Save $24.92 (38% off)</span>
+
+            <div class="bundle-price-block reveal">
+                <div class="bundle-price">$39.99</div>
+                <div class="bundle-term">one-time purchase, forever</div>
             </div>
-            <div class="bundle-buttons reveal reveal-delay-3">
-                <a href="https://polar.sh/checkout/polar_c_Fb32Anj5Xsv1T0M0YNka9WeM1xrvyMrCfQIWN2fZeYD" target="_blank" rel="noopener" class="btn btn-primary btn-large">Purchase the Bundle</a>
-                <a href="downloads/TeenyApps-Bundle.zip" class="btn btn-outline btn-large" download>Download All Apps</a>
-                <p class="download-all-note">Downloads all apps packaged in a .zip file</p>
+
+            <div class="bundle-value reveal">
+                9 apps individually: <strong>$64.91</strong> &middot; Save <strong>$24.92 (38% off)</strong>
+            </div>
+
+            <div class="bundle-buttons reveal">
+                <a href="https://polar.sh/checkout/polar_c_Fb32Anj5Xsv1T0M0YNka9WeM1xrvyMrCfQIWN2fZeYD" target="_blank" rel="noopener" class="btn btn-primary btn-large">Purchase the bundle</a>
+                <a href="downloads/TeenyApps-Bundle.zip" class="btn btn-outline btn-large" download>Download all apps</a>
+                <p class="bundle-note">All 9 apps in one .zip file</p>
             </div>
         </div>
     </section>
@@ -828,32 +2042,121 @@
     </footer>
 
     <script>
-        // Scroll reveal
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    revealObserver.unobserve(entry.target);
+        // ===== Scroll reveal =====
+        const revealObs = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    revealObs.unobserve(e.target);
                 }
             });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
-        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-        // Nav shadow on scroll
+        // ===== Nav scroll state =====
         const nav = document.querySelector('nav');
-        let ticking = false;
+        let navTicking = false;
         window.addEventListener('scroll', () => {
-            if (!ticking) {
+            if (!navTicking) {
                 requestAnimationFrame(() => {
                     nav.classList.toggle('scrolled', window.scrollY > 20);
-                    ticking = false;
+                    navTicking = false;
                 });
-                ticking = true;
+                navTicking = true;
             }
         });
 
-        // GA4 custom event tracking — per-app card clicks
+        // ===== Menu bar clock =====
+        (function() {
+            const el = document.getElementById('mbClock');
+            function tick() {
+                const d = new Date();
+                let h = d.getHours();
+                const m = d.getMinutes().toString().padStart(2, '0');
+                const ap = h >= 12 ? 'PM' : 'AM';
+                h = h % 12 || 12;
+                el.textContent = `${h}:${m} ${ap}`;
+            }
+            tick();
+            setInterval(tick, 30000);
+        })();
+
+        // ===== Menu bar cycler =====
+        (function() {
+            const icons = document.querySelectorAll('#mbApps .mb-app');
+            const slides = document.querySelectorAll('#mbStage .mb-slide');
+            let cur = 4;
+            let timer = null;
+
+            function setActive(idx) {
+                icons.forEach((el, i) => el.classList.toggle('active', i === idx));
+                slides.forEach((el, i) => el.classList.toggle('active', i === idx));
+                cur = idx;
+            }
+
+            function start() {
+                if (timer) return;
+                timer = setInterval(() => setActive((cur + 1) % icons.length), 3800);
+            }
+            function pause() {
+                clearInterval(timer);
+                timer = null;
+            }
+
+            icons.forEach((icon, i) => {
+                icon.addEventListener('click', () => {
+                    pause();
+                    setActive(i);
+                    setTimeout(start, 9000);
+                });
+            });
+
+            start();
+        })();
+
+        // ===== TeenyScreeny live seconds =====
+        (function() {
+            const els = document.querySelectorAll('[data-screeny-sec], [data-card-sec]');
+            let s = 6;
+            setInterval(() => {
+                s = (s + 1) % 60;
+                const v = s.toString().padStart(2, '0');
+                els.forEach(el => el.textContent = v);
+            }, 1000);
+        })();
+
+        // ===== TeenyTool row highlight cycler =====
+        (function() {
+            function setupCycle(selector) {
+                const rows = document.querySelectorAll(selector);
+                if (!rows.length) return;
+                let idx = 0;
+                rows[0].classList.add('hover');
+                setInterval(() => {
+                    rows[idx].classList.remove('hover');
+                    idx = (idx + 1) % rows.length;
+                    rows[idx].classList.add('hover');
+                }, 1600);
+            }
+            setupCycle('[data-tool-row]');
+            setupCycle('[data-card-tool]');
+        })();
+
+        // ===== TeenyStat live CPU =====
+        (function() {
+            const els = document.querySelectorAll('[data-stat-cpu], [data-card-cpu]');
+            const memEls = document.querySelectorAll('[data-stat-mem]');
+            const vals = [42, 38, 55, 47, 61, 44, 39, 52, 48, 43];
+            const memVals = [67, 69, 66, 68, 70, 67, 65, 68];
+            let i = 0;
+            setInterval(() => {
+                els.forEach(el => el.textContent = vals[i % vals.length] + '%');
+                memEls.forEach(el => el.textContent = memVals[i % memVals.length] + '%');
+                i++;
+            }, 1800);
+        })();
+
+        // ===== GA4 event tracking =====
         document.querySelectorAll('.app-card a[download]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const appName = btn.closest('.app-card').querySelector('h3').textContent;
@@ -866,8 +2169,6 @@
                 gtag('event', 'purchase_click', { app_name: appName });
             });
         });
-
-        // GA4 — bundle purchase click
         document.querySelectorAll('.bundle a[href*="polar.sh"]').forEach(btn => {
             btn.addEventListener('click', () => {
                 gtag('event', 'purchase_click', { app_name: 'Bundle' });
