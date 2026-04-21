@@ -1314,6 +1314,143 @@
                 scroll-behavior: auto !important;
             }
         }
+
+        /* ===== HOMEBREW INSTALL ===== */
+        .hero-brew {
+            max-width: 720px;
+            margin: 24px auto 0;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero .hero-brew { margin-bottom: -120px; }
+
+        .hero-brew-label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            letter-spacing: 0.1px;
+        }
+
+        .hero-brew-cmd {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            background: var(--bg-panel);
+            border: 1.5px solid var(--border-strong);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--text);
+            cursor: pointer;
+            transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            max-width: 100%;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            -webkit-appearance: none;
+        }
+
+        .hero-brew-cmd:hover {
+            border-color: var(--orange);
+            background: rgba(255, 107, 53, 0.08);
+            transform: translateY(-1px);
+            box-shadow: 0 10px 28px rgba(255, 107, 53, 0.18), 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .hero-brew-prompt {
+            color: var(--orange);
+            font-weight: 600;
+            user-select: none;
+            flex-shrink: 0;
+        }
+
+        .hero-brew-cmd code {
+            flex: 0 1 auto;
+            white-space: nowrap;
+            min-width: 0;
+            font-family: inherit;
+            font-size: inherit;
+            color: var(--text);
+        }
+
+        .hero-brew-copy {
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            padding-left: 12px;
+            border-left: 1px solid var(--border-strong);
+            user-select: none;
+            transition: color 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .hero-brew-cmd:hover .hero-brew-copy { color: var(--orange); }
+
+        .hero-brew-cmd.copied {
+            border-color: var(--green);
+            background: rgba(74, 222, 128, 0.08);
+        }
+        .hero-brew-cmd.copied .hero-brew-copy { color: var(--green); }
+
+        /* Compact variant inside app cards */
+        .card-brew {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border-strong);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 14px;
+            font-family: var(--font-body);
+            font-size: 12px;
+            color: var(--text);
+            cursor: pointer;
+            transition: border-color 0.15s ease, background 0.15s ease;
+            text-align: left;
+            -webkit-appearance: none;
+        }
+
+        .card-brew:hover {
+            border-color: var(--orange);
+            background: rgba(255, 107, 53, 0.06);
+        }
+
+        .card-brew-label {
+            flex: 1;
+            font-weight: 500;
+            color: var(--text);
+            user-select: none;
+            letter-spacing: 0.1px;
+        }
+
+        .card-brew-copy {
+            font-family: var(--font-body);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            padding-left: 10px;
+            border-left: 1px solid var(--border-strong);
+            flex-shrink: 0;
+            user-select: none;
+            transition: color 0.15s ease;
+        }
+
+        .card-brew:hover .card-brew-copy { color: var(--orange); }
+
+        .card-brew.copied {
+            border-color: var(--green);
+            background: rgba(74, 222, 128, 0.06);
+        }
+        .card-brew.copied .card-brew-copy { color: var(--green); }
+    
     </style>
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-9VB76QH7EG"></script>
@@ -1682,6 +1819,15 @@
                 <a href="#apps" class="btn btn-outline btn-large">See the apps</a>
                 <a href="#bundle" class="btn btn-primary btn-large">Get the bundle</a>
             </div>
+            <div class="hero-brew reveal">
+                <span class="hero-brew-label">Or install with Homebrew</span>
+                <button class="hero-brew-cmd" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenyapps" aria-label="Copy Homebrew bundle install command">
+                    <span class="hero-brew-prompt" aria-hidden="true">$</span>
+                    <code>brew install --cask johnsciacchitano/teenyapps/teenyapps</code>
+                    <span class="hero-brew-copy" aria-live="polite">Copy</span>
+                </button>
+            </div>
+
         </div>
     </section>
 
@@ -1724,6 +1870,10 @@
                         <a href="https://teenytool.com/downloads/TeenyTool.dmg" class="btn btn-outline btn-sm" download>Download</a>
                         <a href="https://buy.polar.sh/polar_cl_siOuJZCjLelM6W5xaCDGZ4oOQYvyDg9q5X8hu14ZHU0" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
+                    <button class="card-brew" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenytool" aria-label="Copy Homebrew install command for TeenyTool">
+                        <span class="card-brew-label">Install with Homebrew</span>
+                        <span class="card-brew-copy" aria-live="polite">Copy</span>
+                    </button>
                     <a href="https://teenytool.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
                 </article>
 
@@ -1755,6 +1905,10 @@
                         <a href="https://teenydisplay.com/downloads/TeenyDisplay.dmg" class="btn btn-outline btn-sm" download>Download</a>
                         <a href="https://buy.polar.sh/polar_cl_w3ETJIXjsNDC2rFlO2nqH2ErZDPMEshgbEEwQ0UFA1Q" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
+                    <button class="card-brew" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenydisplay" aria-label="Copy Homebrew install command for TeenyDisplay">
+                        <span class="card-brew-label">Install with Homebrew</span>
+                        <span class="card-brew-copy" aria-live="polite">Copy</span>
+                    </button>
                     <a href="https://teenydisplay.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
                 </article>
 
@@ -1784,6 +1938,10 @@
                         <a href="https://teenyscreeny.com/downloads/TeenyScreeny.dmg" class="btn btn-outline btn-sm" download>Download</a>
                         <a href="https://buy.polar.sh/polar_cl_h8MDjyFs6btS1eSaJ9bbDszDNC9KghQ57WvTa4LdP4j" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
+                    <button class="card-brew" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenyscreeny" aria-label="Copy Homebrew install command for TeenyScreeny">
+                        <span class="card-brew-label">Install with Homebrew</span>
+                        <span class="card-brew-copy" aria-live="polite">Copy</span>
+                    </button>
                     <a href="https://teenyscreeny.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
                 </article>
 
@@ -1821,6 +1979,10 @@
                         <a href="https://teenymute.com/downloads/TeenyMute.dmg" class="btn btn-outline btn-sm" download>Download</a>
                         <a href="https://buy.polar.sh/polar_cl_LGGnszR5nHsuDiP5zukSuWXsi6lxI6nJp0y231xDZ2W" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
+                    <button class="card-brew" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenymute" aria-label="Copy Homebrew install command for TeenyMute">
+                        <span class="card-brew-label">Install with Homebrew</span>
+                        <span class="card-brew-copy" aria-live="polite">Copy</span>
+                    </button>
                     <a href="https://teenymute.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
                 </article>
 
@@ -1852,6 +2014,10 @@
                         <a href="https://teenyclip.com/downloads/TeenyClip.dmg" class="btn btn-outline btn-sm" download>Download</a>
                         <a href="https://buy.polar.sh/polar_cl_XqJybhs4oYrCiytowUnsal8tvcQVU4Izt2bJw3zZ1Lm" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
+                    <button class="card-brew" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenyclip" aria-label="Copy Homebrew install command for TeenyClip">
+                        <span class="card-brew-label">Install with Homebrew</span>
+                        <span class="card-brew-copy" aria-live="polite">Copy</span>
+                    </button>
                     <a href="https://teenyclip.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
                 </article>
 
@@ -1883,6 +2049,10 @@
                         <a href="https://teenysound.com/downloads/TeenySound.dmg" class="btn btn-outline btn-sm" download>Download</a>
                         <a href="https://buy.polar.sh/polar_cl_ihdSRfNNQfoH8ebMIQQrM5SVE0LKQ5svqrO0G34z330" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
+                    <button class="card-brew" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenysound" aria-label="Copy Homebrew install command for TeenySound">
+                        <span class="card-brew-label">Install with Homebrew</span>
+                        <span class="card-brew-copy" aria-live="polite">Copy</span>
+                    </button>
                     <a href="https://teenysound.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
                 </article>
 
@@ -1918,6 +2088,10 @@
                         <a href="https://teenystat.com/downloads/TeenyStat.dmg" class="btn btn-outline btn-sm" download>Download</a>
                         <a href="https://buy.polar.sh/polar_cl_a59Bxpve12wjaySD7a22lFN5N3KhyRNGYCUcD0Ikrc2" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
+                    <button class="card-brew" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenystat" aria-label="Copy Homebrew install command for TeenyStat">
+                        <span class="card-brew-label">Install with Homebrew</span>
+                        <span class="card-brew-copy" aria-live="polite">Copy</span>
+                    </button>
                     <a href="https://teenystat.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
                 </article>
 
@@ -1950,6 +2124,10 @@
                         <a href="https://teenyshelf.com/downloads/TeenyShelf.dmg" class="btn btn-outline btn-sm" download>Download</a>
                         <a href="https://buy.polar.sh/polar_cl_ybSb7Y2xDTWS0bUadZlPnvHQbHRIxc8iamgZs3rnjPg" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
+                    <button class="card-brew" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenyshelf" aria-label="Copy Homebrew install command for TeenyShelf">
+                        <span class="card-brew-label">Install with Homebrew</span>
+                        <span class="card-brew-copy" aria-live="polite">Copy</span>
+                    </button>
                     <a href="https://teenyshelf.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
                 </article>
 
@@ -1983,6 +2161,10 @@
                         <a href="https://teenycolor.com/downloads/TeenyColor.dmg" class="btn btn-outline btn-sm" download>Download</a>
                         <a href="https://buy.polar.sh/polar_cl_6o4mhi1rJ9arjSrFdRQvzKuHtyn9ieF1sVOUw2bzTip" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
+                    <button class="card-brew" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenycolor" aria-label="Copy Homebrew install command for TeenyColor">
+                        <span class="card-brew-label">Install with Homebrew</span>
+                        <span class="card-brew-copy" aria-live="polite">Copy</span>
+                    </button>
                     <a href="https://teenycolor.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
                 </article>
 
@@ -2023,6 +2205,15 @@
                 <a href="downloads/TeenyApps-Bundle.zip" class="btn btn-outline btn-large" download>Download all apps</a>
                 <p class="bundle-note">All 9 apps in one .zip file</p>
             </div>
+            <div class="hero-brew reveal" style="margin-top: 28px;">
+                <span class="hero-brew-label">Or install with Homebrew</span>
+                <button class="hero-brew-cmd" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenyapps" aria-label="Copy Homebrew bundle install command">
+                    <span class="hero-brew-prompt" aria-hidden="true">$</span>
+                    <code>brew install --cask johnsciacchitano/teenyapps/teenyapps</code>
+                    <span class="hero-brew-copy" aria-live="polite">Copy</span>
+                </button>
+            </div>
+
         </div>
     </section>
 
@@ -2186,6 +2377,33 @@
                 gtag('event', 'purchase_click', { app_name: 'Bundle' });
             });
         });
-    </script>
+    
+    // Homebrew command copy-to-clipboard (both .hero-brew-cmd and .card-brew)
+    document.querySelectorAll('.hero-brew-cmd, .card-brew').forEach(el => {
+        const copyEl = el.querySelector('.hero-brew-copy, .card-brew-copy');
+        const origText = copyEl ? copyEl.textContent : 'Copy';
+        el.addEventListener('click', async () => {
+            const cmd = el.dataset.cmd;
+            try {
+                await navigator.clipboard.writeText(cmd);
+                if (copyEl) copyEl.textContent = 'Copied!';
+                el.classList.add('copied');
+                setTimeout(() => {
+                    if (copyEl) copyEl.textContent = origText;
+                    el.classList.remove('copied');
+                }, 1500);
+            } catch (e) {
+                const code = el.querySelector('code');
+                if (code) {
+                    const range = document.createRange();
+                    range.selectNodeContents(code);
+                    const sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                }
+            }
+        });
+    });
+</script>
 </body>
 </html>
