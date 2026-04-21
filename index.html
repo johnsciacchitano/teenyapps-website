@@ -1323,7 +1323,15 @@
             padding: 0 20px;
         }
 
-        .hero .hero-brew { margin-bottom: -120px; }
+        .hero .hero-brew {
+            margin-bottom: -120px;
+            position: relative;
+            z-index: 3;
+        }
+
+        /* Lift the hero section above .apps so the pill's overlap region
+           (from its negative margin-bottom) catches clicks before .apps. */
+        .hero { position: relative; z-index: 2; }
 
         .hero-brew-label {
             display: block;
@@ -1407,7 +1415,7 @@
             border-radius: 8px;
             padding: 10px 12px;
             margin-bottom: 14px;
-            font-family: var(--font-body);
+            font-family: var(--font-mono);
             font-size: 12px;
             color: var(--text);
             cursor: pointer;
@@ -1427,6 +1435,7 @@
             color: var(--text);
             user-select: none;
             letter-spacing: 0.1px;
+            font-family: var(--font-mono);
         }
 
         .card-brew-copy {
@@ -1451,6 +1460,26 @@
         }
         .card-brew.copied .card-brew-copy { color: var(--green); }
     
+
+
+        .hero-brew-mobile {
+            display: none;
+            flex: 1;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text);
+            text-align: left;
+            user-select: none;
+        }
+
+        @media (max-width: 640px) {
+            .hero-brew-label { display: none; }
+            .hero-brew-cmd { padding: 10px 12px; }
+            .hero-brew-cmd .hero-brew-prompt,
+            .hero-brew-cmd > code { display: none; }
+            .hero-brew-mobile { display: block; }
+        }
+
     </style>
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-9VB76QH7EG"></script>
@@ -1820,10 +1849,11 @@
                 <a href="#bundle" class="btn btn-primary btn-large">Get the bundle</a>
             </div>
             <div class="hero-brew reveal">
-                <span class="hero-brew-label">Or install with Homebrew</span>
+                <span class="hero-brew-label">Or install with Homebrew 🍺</span>
                 <button class="hero-brew-cmd" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenyapps" aria-label="Copy Homebrew bundle install command">
                     <span class="hero-brew-prompt" aria-hidden="true">$</span>
                     <code>brew install --cask johnsciacchitano/teenyapps/teenyapps</code>
+                    <span class="hero-brew-mobile" aria-hidden="true">🍺 Install with Homebrew</span>
                     <span class="hero-brew-copy" aria-live="polite">Copy</span>
                 </button>
             </div>
@@ -1871,7 +1901,7 @@
                         <a href="https://buy.polar.sh/polar_cl_siOuJZCjLelM6W5xaCDGZ4oOQYvyDg9q5X8hu14ZHU0" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
                     <button class="card-brew" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenytool" aria-label="Copy Homebrew install command for TeenyTool">
-                        <span class="card-brew-label">Install with Homebrew</span>
+                        <span class="card-brew-label">🍺 Install with Homebrew</span>
                         <span class="card-brew-copy" aria-live="polite">Copy</span>
                     </button>
                     <a href="https://teenytool.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
@@ -1906,7 +1936,7 @@
                         <a href="https://buy.polar.sh/polar_cl_w3ETJIXjsNDC2rFlO2nqH2ErZDPMEshgbEEwQ0UFA1Q" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
                     <button class="card-brew" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenydisplay" aria-label="Copy Homebrew install command for TeenyDisplay">
-                        <span class="card-brew-label">Install with Homebrew</span>
+                        <span class="card-brew-label">🍺 Install with Homebrew</span>
                         <span class="card-brew-copy" aria-live="polite">Copy</span>
                     </button>
                     <a href="https://teenydisplay.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
@@ -1939,7 +1969,7 @@
                         <a href="https://buy.polar.sh/polar_cl_h8MDjyFs6btS1eSaJ9bbDszDNC9KghQ57WvTa4LdP4j" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
                     <button class="card-brew" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenyscreeny" aria-label="Copy Homebrew install command for TeenyScreeny">
-                        <span class="card-brew-label">Install with Homebrew</span>
+                        <span class="card-brew-label">🍺 Install with Homebrew</span>
                         <span class="card-brew-copy" aria-live="polite">Copy</span>
                     </button>
                     <a href="https://teenyscreeny.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
@@ -1980,7 +2010,7 @@
                         <a href="https://buy.polar.sh/polar_cl_LGGnszR5nHsuDiP5zukSuWXsi6lxI6nJp0y231xDZ2W" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
                     <button class="card-brew" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenymute" aria-label="Copy Homebrew install command for TeenyMute">
-                        <span class="card-brew-label">Install with Homebrew</span>
+                        <span class="card-brew-label">🍺 Install with Homebrew</span>
                         <span class="card-brew-copy" aria-live="polite">Copy</span>
                     </button>
                     <a href="https://teenymute.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
@@ -2015,7 +2045,7 @@
                         <a href="https://buy.polar.sh/polar_cl_XqJybhs4oYrCiytowUnsal8tvcQVU4Izt2bJw3zZ1Lm" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
                     <button class="card-brew" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenyclip" aria-label="Copy Homebrew install command for TeenyClip">
-                        <span class="card-brew-label">Install with Homebrew</span>
+                        <span class="card-brew-label">🍺 Install with Homebrew</span>
                         <span class="card-brew-copy" aria-live="polite">Copy</span>
                     </button>
                     <a href="https://teenyclip.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
@@ -2050,7 +2080,7 @@
                         <a href="https://buy.polar.sh/polar_cl_ihdSRfNNQfoH8ebMIQQrM5SVE0LKQ5svqrO0G34z330" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
                     <button class="card-brew" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenysound" aria-label="Copy Homebrew install command for TeenySound">
-                        <span class="card-brew-label">Install with Homebrew</span>
+                        <span class="card-brew-label">🍺 Install with Homebrew</span>
                         <span class="card-brew-copy" aria-live="polite">Copy</span>
                     </button>
                     <a href="https://teenysound.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
@@ -2089,7 +2119,7 @@
                         <a href="https://buy.polar.sh/polar_cl_a59Bxpve12wjaySD7a22lFN5N3KhyRNGYCUcD0Ikrc2" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
                     <button class="card-brew" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenystat" aria-label="Copy Homebrew install command for TeenyStat">
-                        <span class="card-brew-label">Install with Homebrew</span>
+                        <span class="card-brew-label">🍺 Install with Homebrew</span>
                         <span class="card-brew-copy" aria-live="polite">Copy</span>
                     </button>
                     <a href="https://teenystat.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
@@ -2125,7 +2155,7 @@
                         <a href="https://buy.polar.sh/polar_cl_ybSb7Y2xDTWS0bUadZlPnvHQbHRIxc8iamgZs3rnjPg" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
                     <button class="card-brew" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenyshelf" aria-label="Copy Homebrew install command for TeenyShelf">
-                        <span class="card-brew-label">Install with Homebrew</span>
+                        <span class="card-brew-label">🍺 Install with Homebrew</span>
                         <span class="card-brew-copy" aria-live="polite">Copy</span>
                     </button>
                     <a href="https://teenyshelf.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
@@ -2162,7 +2192,7 @@
                         <a href="https://buy.polar.sh/polar_cl_6o4mhi1rJ9arjSrFdRQvzKuHtyn9ieF1sVOUw2bzTip" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Purchase</a>
                     </div>
                     <button class="card-brew" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenycolor" aria-label="Copy Homebrew install command for TeenyColor">
-                        <span class="card-brew-label">Install with Homebrew</span>
+                        <span class="card-brew-label">🍺 Install with Homebrew</span>
                         <span class="card-brew-copy" aria-live="polite">Copy</span>
                     </button>
                     <a href="https://teenycolor.com" class="learn-more" target="_blank" rel="noopener">Learn more &rarr;</a>
@@ -2205,15 +2235,16 @@
                 <a href="downloads/TeenyApps-Bundle.zip" class="btn btn-outline btn-large" download>Download all apps</a>
                 <p class="bundle-note">All 9 apps in one .zip file</p>
             </div>
-            <div class="hero-brew reveal" style="margin-top: 28px;">
-                <span class="hero-brew-label">Or install with Homebrew</span>
-                <button class="hero-brew-cmd" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenyapps" aria-label="Copy Homebrew bundle install command">
-                    <span class="hero-brew-prompt" aria-hidden="true">$</span>
-                    <code>brew install --cask johnsciacchitano/teenyapps/teenyapps</code>
-                    <span class="hero-brew-copy" aria-live="polite">Copy</span>
-                </button>
-            </div>
 
+        </div>
+        <div class="hero-brew reveal" style="margin-top: 28px;">
+            <span class="hero-brew-label">Or install with Homebrew 🍺</span>
+            <button class="hero-brew-cmd" type="button" data-cmd="brew install --cask johnsciacchitano/teenyapps/teenyapps" aria-label="Copy Homebrew bundle install command">
+                <span class="hero-brew-prompt" aria-hidden="true">$</span>
+                <code>brew install --cask johnsciacchitano/teenyapps/teenyapps</code>
+                <span class="hero-brew-mobile" aria-hidden="true">🍺 Install with Homebrew</span>
+                <span class="hero-brew-copy" aria-live="polite">Copy</span>
+            </button>
         </div>
     </section>
 
@@ -2377,30 +2408,42 @@
                 gtag('event', 'purchase_click', { app_name: 'Bundle' });
             });
         });
-    
-    // Homebrew command copy-to-clipboard (both .hero-brew-cmd and .card-brew)
-    document.querySelectorAll('.hero-brew-cmd, .card-brew').forEach(el => {
-        const copyEl = el.querySelector('.hero-brew-copy, .card-brew-copy');
-        const origText = copyEl ? copyEl.textContent : 'Copy';
-        el.addEventListener('click', async () => {
-            const cmd = el.dataset.cmd;
-            try {
-                await navigator.clipboard.writeText(cmd);
+    // Homebrew command copy-to-clipboard (hero + card pills)
+    document.querySelectorAll('.hero-brew-cmd, .card-brew').forEach(function(el) {
+        var copyEl = el.querySelector('.hero-brew-copy, .card-brew-copy');
+        var origText = copyEl ? copyEl.textContent : 'Copy';
+        el.addEventListener('click', function() {
+            var cmd = el.dataset.cmd || '';
+            var showCopied = function() {
                 if (copyEl) copyEl.textContent = 'Copied!';
                 el.classList.add('copied');
-                setTimeout(() => {
+                setTimeout(function() {
                     if (copyEl) copyEl.textContent = origText;
                     el.classList.remove('copied');
                 }, 1500);
-            } catch (e) {
-                const code = el.querySelector('code');
-                if (code) {
-                    const range = document.createRange();
-                    range.selectNodeContents(code);
-                    const sel = window.getSelection();
-                    sel.removeAllRanges();
-                    sel.addRange(range);
-                }
+            };
+            // Try execCommand first — it's synchronous and preserves the user
+            // gesture, which Safari requires for clipboard writes (especially
+            // on file:// URLs and older iOS).
+            var ok = false;
+            try {
+                var ta = document.createElement('textarea');
+                ta.value = cmd;
+                ta.setAttribute('readonly', '');
+                ta.style.position = 'fixed';
+                ta.style.top = '-9999px';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                ta.setSelectionRange(0, cmd.length);
+                ok = document.execCommand('copy');
+                document.body.removeChild(ta);
+            } catch (e) { /* fall through */ }
+            if (ok) {
+                showCopied();
+            } else if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(cmd).then(showCopied).catch(function() {});
             }
         });
     });
